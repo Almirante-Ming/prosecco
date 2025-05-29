@@ -79,22 +79,21 @@ def get_all_devices():
 @adm_route.route('/adm/device/new', methods=['POST'])
 def add_new_device():
     ip = request.form.get('ip')
-    locale = request.form.get('ip')
+    locale = request.form.get('locale')  # Corrigido: antes estava 'ip'
     group = request.form.get('group')
-    user_id = request.form.get('user')
-    
-    
-    if db.session.query(Device).filter(Device.ip == ip) != None:
-        return jsonify(sucess=False, error='this device aready on system'), 409
-    
-    new_display = Device(user_id=user_id, ip=ip, group=group, locale=locale)
-    
-    db.session.add(new_display)
+    user_id = request.form.get('user_id')  # Consistente com o patch
+
+    if db.session.query(Device).filter(Device.ip == ip).first() is not None:
+        return jsonify(success=False, error='This device is already in the system'), 409
+
+    new_device = Device(user_id=user_id, ip=ip, group=group, locale=locale)
+
+    db.session.add(new_device)
     db.session.commit()
-    
-    return jsonify(sucess=True, message='device added succesfull'), 201
-    
-    
+
+    return jsonify(success=True, message='Device added successfully'), 201
+
+
 @adm_route.route('/adm/device/<int:device_id>', methods=['PATCH'])
 def update_device(device_id):
     device = db.session.query(Device).filter(Device.id == device_id).first()
@@ -124,3 +123,4 @@ def soft_delete_device(device_id):
     device.a_state = 'DELETED'
     db.session.commit()
     return jsonify(success=True, message='Device deleted successfully'), 200
+
