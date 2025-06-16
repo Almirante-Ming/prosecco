@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gerenciar: document.getElementById("gerenciarContasSection"),
   };
 
-  // Obter o nome do usuário do atributo data-username
   const username = document.body.getAttribute("data-username");
 
   if (username) {

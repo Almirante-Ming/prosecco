@@ -3,8 +3,6 @@ name = 'prosecco'
 version = '0.1.0'
 description = ''
 authors = [
-    {name = 'Dirceu_Alves',email = 'netinhoalves_2011@hotmail.com'},
-    {name = 'Loian_Sousa',email = 'loiansouza@outlook.com'},
     {name = 'V.Guilherme',email = 'v.guilherme.barreto@gmail.com'}
 ]
 readme = 'README.md'
