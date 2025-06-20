@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const devicesListContainer = document.getElementById("devices_list");
 
     const titleElement = document.createElement("h3");
-    titleElement.innerText = "Dispositivos Conectados";
+    titleElement.innerText = "Dispositivos Registrados";
     titleElement.style.position = "sticky";
     titleElement.style.top = "0";
     titleElement.style.backgroundColor = "#fff";
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Erro ao carregar dispositivos:", error);
             const errorMessage = document.createElement("p");
-            errorMessage.textContent = "Não foi possível carregar os dispositivos. Tente novamente mais tarde.";
+            errorMessage.textContent = "Nao foi possível carregar os dispositivos. Tente novamente mais tarde.";
             errorMessage.style.color = "red";
             devicesListContainer.appendChild(errorMessage);
         }
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function editDevice(device) {
         const newIp = prompt("Novo IP:", device.ip);
-        if (newIp === null) return;  // Cancelado
+        if (newIp === null) return;
 
         const newLocale = prompt("Novo Local:", device.locale);
         if (newLocale === null) return;
