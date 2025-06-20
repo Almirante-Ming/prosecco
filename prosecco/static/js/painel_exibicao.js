@@ -1,17 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const clockElement = document.getElementById('clock');
+    const dateElement = document.getElementById('current-date');
+
     function atualizarRelogio() {
         const agora = new Date();
+
+        // --- Atualização do Relógio ---
         const horas = String(agora.getHours()).padStart(2, '0');
         const minutos = String(agora.getMinutes()).padStart(2, '0');
         const segundos = String(agora.getSeconds()).padStart(2, '0');
         const horaFormatada = `${horas}:${minutos}:${segundos}`;
-        const clockElement = document.getElementById('clock');
+
         if (clockElement) {
             clockElement.textContent = horaFormatada;
         }
+
+        // --- Atualização da Data ---
+        if (dateElement) {
+            const options = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' };
+            let dataFormatada = agora.toLocaleDateString('pt-BR', options);
+
+            // Formatar para o estilo desejado: [dia-semana, dia/mês/ano]
+            const parts = dataFormatada.split(', ');
+            let dayOfWeek = parts.shift(); // Remove e retorna o dia da semana
+            const dateParts = parts.join('').split('/'); // Junta o restante e separa por '/'
+
+            // Capitalizar a primeira letra do dia da semana
+            dayOfWeek = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
+
+            const formattedDate = `${dayOfWeek}, ${dateParts.join('/')}`;
+            dateElement.textContent = formattedDate;
+        }
     }
+
     setInterval(atualizarRelogio, 1000);
-    atualizarRelogio();
+    atualizarRelogio(); // Chamar na inicialização
 
     function gerarCalendario() {
         const diasContainer = document.getElementById("dias");
@@ -28,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         if (mesAnoElement) {
-            mesAnoElement.textContent = `${nomesMeses[mes]} ${ano}`;
+            mesAnoElement.textContent = `${nomesMeses [mes]} ${ano}`;
         }
 
         const primeiroDiaDoMes = new Date(ano, mes, 1).getDay();
@@ -71,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 const temperatura = Math.round(data.main.temp);
-                const descricao = data.weather[0].description;
-                const codigoIcone = data.weather[0].icon;
+                const descricao = data.weather [0].description;
+                const codigoIcone = data.weather [0].icon;
 
                 switch (codigoIcone) {
                     case "01d": iconeClimaElement.className = "fas fa-sun fa-lg"; break;
@@ -172,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (mediaElement.tagName === 'VIDEO') {
             mediaElement.addEventListener('loadedmetadata', checkDimensions, { once: true });
             if (mediaElement.readyState >= 1) {
-                 checkDimensions();
+                checkDimensions();
             }
         }
     }
@@ -190,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         carouselContentArea.innerHTML = '';
 
-        const media = mediaFiles[currentIndex];
+        const media = mediaFiles [currentIndex];
         let mediaElement;
 
         if (media.type === 'image') {

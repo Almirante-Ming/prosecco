@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const deviceInfo = document.createElement("div");
             deviceInfo.innerHTML = `
-                <p><strong>ID:</strong> ${device.id}</p>
                 <p><strong>IP:</strong> ${device.ip}</p>
                 <p><strong>Grupo:</strong> ${device.group}</p>
                 <p><strong>Local:</strong> ${device.locale}</p>

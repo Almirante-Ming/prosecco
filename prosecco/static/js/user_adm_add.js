@@ -42,10 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: formData
             });
 
-            // 4. Tratar a resposta
             const result = await response.json();
 
-            if (response.ok) { // Status HTTP 200-299
+            if (response.ok) {
                 feedbackMessageP.textContent = 'Usuário criado com sucesso!';
                 feedbackMessageP.classList.add('has-text-success');
                 userNameInput.value = '';

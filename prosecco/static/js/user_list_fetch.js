@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const userInfo = document.createElement("div");
             userInfo.innerHTML = `
-                <p><strong>ID:</strong> ${user.id}</p>
                 <p><strong>Nome:</strong> ${user.name}</p>
                 <p><strong>Email:</strong> ${user.email}</p>
                 <p><strong>Status:</strong> ${user.u_state}</p>

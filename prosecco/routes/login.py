@@ -31,7 +31,7 @@ def auth():
     if user.u_type != User_type.ADMIN:
         allowed = any(device.ip_address == client_ip and device.status == 'active' for device in user.devices) # type: ignore
         if not allowed:
-            return jsonify(success=False, error="IP não autorizado. Contate um administrador para cadastrar sua máquina."), 403
+            return jsonify(success=False, error="não autorizado. usuario sem permissoes"), 403
 
     login_user(user)
     session.permanent = True

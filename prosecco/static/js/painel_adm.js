@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sections = {
     upload: document.getElementById("uploadSection"),
     selecionar: document.getElementById("selecionarTelasSection"),
-    identificar: document.getElementById("identificarTelasSection"),
+    // Removed 'identificar' as there's no corresponding HTML section in the provided file
     gerenciar: document.getElementById("gerenciarContasSection"),
   };
 
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const links = document.querySelectorAll(".menu-list li");
 
-  if (links.length >= 5) {
+  if (links.length >= 4) {
     links[0].addEventListener("click", (e) => {
       e.preventDefault();
 
@@ -63,11 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     links[3].addEventListener("click", (e) => {
-      e.preventDefault();
-      toggleSections("identificar");
-    });
-
-    links[4].addEventListener("click", (e) => {
       e.preventDefault();
       toggleSections("gerenciar");
     });
