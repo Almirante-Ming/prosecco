@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Atualização do Relógio ---
         const horas = String(agora.getHours()).padStart(2, '0');
         const minutos = String(agora.getMinutes()).padStart(2, '0');
-        const segundos = String(agora.getSeconds()).padStart(2, '0');
-        const horaFormatada = `${horas}:${minutos}:${segundos}`;
+        const horaFormatada = `${horas}:${minutos}`;
 
         if (clockElement) {
             clockElement.textContent = horaFormatada;
@@ -138,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const carouselContentArea = document.getElementById('carousel-content-area');
     const MAX_WIDTH = 1920;
-    const MAX_HEIGHT = 1545;
+    const MAX_HEIGHT = 1080;
     let mediaFiles = [];
     let currentIndex = 0;
     let carouselInterval;
