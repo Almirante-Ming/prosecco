@@ -12,11 +12,7 @@
 
 <header class="header-login">
   <div class="logo-box-ifms is-flex is-align-items-center">
-    <img src="{{ url_for('static', filename='img/ifmslogo.png') }}" alt="Logo IFMS">
-    <div class="logo-subtext ml-3">
-      <p class="if-bold">Instituto Federal</p>
-      <p class="if-estado">Mato Grosso do Sul</p>
-    </div>
+    <img src="{{ url_for('static', filename='img/ifms-tl-marca-2015-dark.png') }}" alt="Logo IFMS">
   </div>
   <h1 class="header-title">Recupere Seu Acesso</h1>
 </header>
@@ -43,7 +39,6 @@
 </main>
 
 <footer class="footer-login has-text-white has-text-centered">
-  <div class="logo-text">D.L.V</div>
   <p>© 2025 IFMS - Campus Três Lagoas - TADS-4</p>
 </footer>
 
@@ -61,7 +56,7 @@ async function Login() {
     const data = await response.json();
 
     if (data.success) {
-        window.location.href = data.redirect_url;  // navega para a página do painel
+        window.location.href = data.redirect_url;
     } else {
         document.getElementById("mensagem").innerHTML = data.error;
     }

@@ -68,6 +68,10 @@ def recovery():
 def adm():
     return render_template('painel_adm.html')
 
+@prosecco.route('/img')
+def img_root():
+    return render_template('painel_user.html')
+
 @prosecco.route('/upload-form')
 @login_required
 def upload_form():
