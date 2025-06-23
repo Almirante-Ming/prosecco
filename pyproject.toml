@@ -31,3 +31,4 @@ flask = "flask.cli:main"
 run = 'flask --app prosecco/app run --host=0.0.0.0 --debug'
 db = 'flask --app prosecco/app db'
 init = 'task db upgrade head && task run'
+clean = 'find . -type d -name "__pycache__" -exec rm -rf {} + && find . -type f -name "*.pyc" -delete'

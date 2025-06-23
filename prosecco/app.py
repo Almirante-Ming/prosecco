@@ -1,8 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_login import LoginManager, login_required
 from prosecco.config import db, migrate, limiter, User_type, scheduler
-from prosecco.utils import access_required, ip_authorized_required
-from prosecco.routes import login_auth, register_new, adm_route, upload_route
+from prosecco.utils import access_required, ip_authorized_required, redirect_by_ip_group,redirect_by_ip_group
+from prosecco.routes import login_auth, register_new, adm_route, upload_route, display_bp
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
@@ -41,14 +41,15 @@ prosecco.register_blueprint(login_auth)
 prosecco.register_blueprint(register_new)
 prosecco.register_blueprint(adm_route)
 prosecco.register_blueprint(upload_route)
+prosecco.register_blueprint(display_bp)
 
 def ratelimit_exceeded(e):
     return 429
 
 @prosecco.route('/')
-@ip_authorized_required
+@redirect_by_ip_group(default_redirect_endpoint='login_bp.login')
 def painel():
-    return render_template('painel_exibicao.html')
+    return redirect(url_for('login_bp.login'))
 
 @prosecco.route('/new')
 def reg():
