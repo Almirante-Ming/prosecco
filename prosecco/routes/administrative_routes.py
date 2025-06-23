@@ -45,14 +45,14 @@ def update_user(user_id):
         return jsonify(success=False, error='User not found'), 404
 
     data = request.json
-    if 'name' in data:
-        user.name = data['name']
-    if 'email' in data:
-        user.email = data['email']
-    if 'password' in data:
-        user.passphrase = hash_pass(data['password'])
-    if 'u_type' in data:
-        user.u_type = data['u_type']
+    if 'name' in data:  # type: ignore
+        user.name = data['name']  # type: ignore
+    if 'email' in data:  # type: ignore
+        user.email = data['email']  # type: ignore
+    if 'password' in data:  # type: ignore
+        user.passphrase = hash_pass(data['password'])  # type: ignore
+    if 'u_type' in data:  # type: ignore
+        user.u_type = data['u_type']  # type: ignore
 
     db.session.commit()
     return jsonify(success=True, message='User updated successfully'), 200
@@ -110,14 +110,14 @@ def update_device(device_id):
         return jsonify(success=False, error='Device not found'), 404
 
     data = request.json
-    if 'ip' in data:
-        device.ip = data['ip']
-    if 'locale' in data:
-        device.locale = data['locale']
-    if 'group' in data:
-        device.group = data['group']
-    if 'user_id' in data:
-        device.user_id = data['user_id']
+    if 'ip' in data:  # type: ignore
+        device.ip = data['ip']  # type: ignore
+    if 'locale' in data:  # type: ignore
+        device.locale = data['locale']  # type: ignore
+    if 'group' in data:  # type: ignore
+        device.group = data['group']  # type: ignore
+    if 'user_id' in data:  # type: ignore
+        device.user_id = data['user_id']  # type: ignore
 
     db.session.commit()
     return jsonify(success=True, message='Device updated successfully'), 200
