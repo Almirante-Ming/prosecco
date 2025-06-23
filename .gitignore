@@ -15,3 +15,4 @@ Thumbs.db
 *.db
 
 prosecco/static/img/uploads/*
+prosecco/static/show_control/*

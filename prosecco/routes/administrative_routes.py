@@ -1,8 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
+from flask_login import current_user
+from pathlib import Path
 from prosecco.config import db
 from werkzeug.security import generate_password_hash as hash_pass
-from prosecco.models import User, Device, device
-from prosecco.config import User_state 
+from prosecco.models import User, Device
+from prosecco.config import User_state, Device_state
 
 
 adm_route = Blueprint('/adm', __name__)
@@ -71,27 +73,34 @@ def delete_user(user_id):
 # ----------- telas--------------------------------------------
 @adm_route.route('/adm/devices', methods=['GET'])
 def get_all_devices():
-    all_devices = db.session.query(Device).all()
+    all_devices = db.session.query(Device).filter(Device.a_state != Device_state.DELETED).all()
     device_list = [device.to_dict() for device in all_devices]
     return jsonify(device_list)    
-
 
 @adm_route.route('/adm/device/new', methods=['POST'])
 def add_new_device():
     ip = request.form.get('ip')
-    locale = request.form.get('locale')  # Corrigido: antes estava 'ip'
+    locale = request.form.get('locale')
     group = request.form.get('group')
-    user_id = request.form.get('user_id')  # Consistente com o patch
+    user_id = current_user.id
 
     if db.session.query(Device).filter(Device.ip == ip).first() is not None:
         return jsonify(success=False, error='This device is already in the system'), 409
+    
+    static_dir = Path(current_app.root_path) / 'static' / 'show_control'
+    show_controler = static_dir / f'{group}.json'
 
-    new_device = Device(user_id=user_id, ip=ip, group=group, locale=locale)
+    if not show_controler.exists():
+        static_dir.mkdir(parents=True, exist_ok=True)
+        show_controler.write_text('[{"file": "","type": ""}]')
+
+    new_device = Device(user_id=user_id, ip=ip, group=group, locale=locale)  # type: ignore
 
     db.session.add(new_device)
     db.session.commit()
 
     return jsonify(success=True, message='Device added successfully'), 201
+
 
 
 @adm_route.route('/adm/device/<int:device_id>', methods=['PATCH'])

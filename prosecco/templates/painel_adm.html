@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Painel Administrativo - IFMS</title>
+    <title>Painel Administrativo</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/painel_adm.css') }}">
@@ -12,6 +12,7 @@
     <script src="{{ url_for('static', filename='js/user_list_fetch.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/user_adm_add.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/device_list_fetch.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/device_adm_add.js') }}" defer></script>
 </head>
 
 <body data-username="{{ current_user.name }}" class="has-background-light is-flex is-flex-direction-column" style="min-height: 100vh;">
@@ -108,36 +109,50 @@
                 </div>
             </section>
 
-            <section id="selecionarTelasSection" class="section" style="display: none;">
-                <div class="container">
-                    <h2 class="title is-4">Selecionar Telas de Exibição</h2>
-                    <p class="mb-4">Selecione quais telas devem exibir os conteúdos atuais:</p>
+<section id="selecionarTelasSection" class="section" style="display: none;">
+    <div class="container">
+        <div class="columns is-multiline">
+            <div class="column is-12">
+                <div class="box">
+                    <h3 class="title is-5 mb-3">Adicionar Nova Tela</h3>
 
-                    <div class="columns is-multiline">
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 1 - Entrada
-                            </label>
-                        </div>
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 2 - Cantina
-                            </label>
-                        </div>
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 3 - Laboratório
-                            </label>
-                        </div>
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 4 - Biblioteca
-                            </label>
+                    <div class="field">
+                        <label class="label">IP</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="endereço IPV4" id="deviceIp" />
                         </div>
                     </div>
-                    <button class="button is-success mt-4">Confirmar Telas Selecionadas</button>
+
+                    <div class="field">
+                        <label class="label">Grupo</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Digite o grupo ao qual a tela pertence" id="deviceGroup" />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Localização</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Onde a tela está instalada" id="deviceLocale" />
+                        </div>
+                    </div>
+
+                    <!-- Campo oculto com o ID do usuário logado -->
+                    <input type="hidden" id="deviceUser" value="{{ current_user.id }}">
+
+                    <div class="field mt-4">
+                        <div class="control">
+                            <button class="button is-primary is-fullwidth" id="cadastrarTelaBtn">Adicionar Tela</button>
+                        </div>
+                    </div>
+
+                    <p id="deviceFeedbackMessage" class="mt-3"></p>
                 </div>
-            </section>
+            </div>
+        </div>
+    </div>
+</section>
+
             <section id="gerenciarContasSection" class="section" style="display: none;">
                 <div class="container">
                     <h2 class="title is-4">Adicionar Contas</h2>
