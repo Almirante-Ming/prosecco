@@ -1,7 +1,7 @@
 [project]
 name = 'prosecco'
 version = '0.1.0'
-description = ''
+description = 'HTTP application to serve images and videos on screens/outdoors'
 authors = [
     {name = 'V.Guilherme',email = 'v.guilherme.barreto@gmail.com'}
 ]
