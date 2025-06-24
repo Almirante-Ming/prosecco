@@ -35,7 +35,7 @@ def load_user(user_id):
     return db.session.get(User, int(user_id))
 
 with prosecco.app_context():
-    from prosecco.models import User, Device, File_trk
+    from prosecco.models import User, Device, File_trk, Token
 
 prosecco.register_blueprint(login_auth)
 prosecco.register_blueprint(register_new)
