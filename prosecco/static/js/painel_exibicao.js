@@ -72,73 +72,107 @@ document.addEventListener('DOMContentLoaded', () => {
     let mediaFiles = [];
     let currentIndex = 0;
 
-    function showNextMedia() {
-        if (!carouselContentArea) {
-            console.error("Elemento 'carousel-content-area' não encontrado.");
-            return;
-        }
+    async function showNextMedia() {
+        if (!carouselContentArea) return;
 
         if (mediaFiles.length === 0) {
             carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Nenhuma mídia para exibir.</p>';
             return;
         }
 
-        carouselContentArea.innerHTML = '';
         const media = mediaFiles[currentIndex];
+        const url = `/static/img/uploads/${media.file}`;
         let mediaElement;
 
-        if (media.type === 'image') {
-            mediaElement = document.createElement('img');
-            mediaElement.src = `/static/img/uploads/${media.file}`;
-            mediaElement.alt = 'Imagem';
-            carouselContentArea.appendChild(mediaElement);
+        try {
+            const cache = await caches.open('media-cache-template');
+            let response = await cache.match(url);
 
-            setTimeout(() => {
+            if (!response) {
+                console.debug(`[MÍDIA] Baixando: ${media.file}`);
+                response = await fetch(url);
+                if (response.ok) {
+                    await cache.put(url, response.clone());
+                } else {
+                    throw new Error(`Erro ao baixar ${url}`);
+                }
+            } else {
+                console.debug(`[MÍDIA] Reutilizando cache: ${media.file}`);
+            }
+
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+
+            carouselContentArea.innerHTML = '';
+
+            if (media.type === 'image') {
+                mediaElement = document.createElement('img');
+                mediaElement.src = blobUrl;
+                mediaElement.alt = 'Imagem';
+                carouselContentArea.appendChild(mediaElement);
+
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % mediaFiles.length;
+                    showNextMedia();
+                }, 20000);
+
+            } else if (media.type === 'video') {
+                mediaElement = document.createElement('video');
+                mediaElement.src = blobUrl;
+                mediaElement.autoplay = true;
+                mediaElement.controls = false;
+                mediaElement.muted = true;
+
+                mediaElement.addEventListener('ended', () => {
+                    currentIndex = (currentIndex + 1) % mediaFiles.length;
+                    showNextMedia();
+                });
+
+                mediaElement.addEventListener('loadedmetadata', () => {
+                    mediaElement.play().catch(err => console.warn('Autoplay bloqueado:', err));
+                });
+
+                carouselContentArea.appendChild(mediaElement);
+            } else {
+                console.warn(`Tipo desconhecido: ${media.type}`);
                 currentIndex = (currentIndex + 1) % mediaFiles.length;
                 showNextMedia();
-            }, 20000); // imagem por 20 segundos
-
-        } else if (media.type === 'video') {
-            mediaElement = document.createElement('video');
-            mediaElement.src = `/static/img/uploads/${media.file}`;
-            mediaElement.autoplay = true;
-            mediaElement.controls = false;
-            mediaElement.muted = true;
-
-            mediaElement.addEventListener('ended', () => {
-                currentIndex = (currentIndex + 1) % mediaFiles.length;
-                showNextMedia();
-            });
-
-            mediaElement.addEventListener('loadedmetadata', () => {
-                mediaElement.play().catch(err => console.warn('Autoplay bloqueado:', err));
-            });
-
-            carouselContentArea.appendChild(mediaElement);
-        } else {
-            console.warn(`Tipo desconhecido: ${media.type}`);
+            }
+        } catch (err) {
+            console.error(`Erro ao exibir mídia ${media.file}:`, err);
             currentIndex = (currentIndex + 1) % mediaFiles.length;
             showNextMedia();
         }
     }
 
-    fetch(`/static/${jsonFileName}`)
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            mediaFiles = data;
-            if (mediaFiles.length > 0) {
-                showNextMedia();
-            } else if (carouselContentArea) {
-                carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Nenhuma mídia configurada.</p>';
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao carregar o arquivo de mídias:', error);
+    async function carregarMidias(jsonPath) {
+        try {
+            console.debug(`[MÍDIA] Forçando atualização do cache...`);
+            await caches.delete('media-cache-template');
+
+            const response = await fetch(`/static/${jsonPath}`);
+            if (!response.ok) throw new Error(`Erro ao carregar JSON: ${response.status}`);
+            const midias = await response.json();
+
+            const midiasValidas = Array.isArray(midias) && midias.every(media =>
+                typeof media.type === 'string' && typeof media.file === 'string'
+            );
+            if (!midiasValidas) throw new Error("JSON inválido.");
+
+            mediaFiles = midias;
+            currentIndex = 0;
+            showNextMedia();
+        } catch (err) {
+            console.error("Erro ao carregar mídias:", err);
             if (carouselContentArea) {
                 carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Erro ao carregar mídias.</p>';
             }
-        });
+        }
+    }
+    carregarMidias(jsonFileName);
+
+    setInterval(() => {
+        console.debug('[MÍDIA] Verificando atualizações do JSON...');
+        carregarMidias(jsonFileName);
+    }, 600000);
 });
