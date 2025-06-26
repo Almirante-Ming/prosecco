@@ -91,3 +91,168 @@ WHERE devices.ip = ? AND devices.a_state = ?
  LIMIT ? OFFSET ?]
 [parameters: ('127.0.0.1', 'ACTIVE', 1, 0)]
 (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+
+
+❯ echo $DATABASE_URL
+sqlite:///./test.db
+❯ export DATABASE_URL='sqlite:////var/www/prosecco/data/prosecco.wd'
+❯ echo $DATABASE_URL
+sqlite:////var/www/prosecco/data/prosecco.wd
+
+╭─    ~/Documents/prosecco  on   main ··························· ✔  prosecco-py3.12   at 04:02:48 PM  ─╮
+╰─                                                                                                                   ─╯
+❯ task init
+/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_limiter/extension.py:324: UserWarning: Using the in-memory storage for tracking rate limits as no storage was explicitly specified. This is not recommended for production use. See: https://flask-limiter.readthedocs.io#configuring-a-storage-backend for documentation about configuring the storage backend.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3297, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 713, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 675, in __init__
+    self.__connect()
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: unable to open database file
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/bin/flask", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask/cli.py", line 1131, in main
+    cli.main()
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/click/core.py", line 1830, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/click/core.py", line 1830, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/click/decorators.py", line 34, in new_func
+    return f(get_current_context(), *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask/cli.py", line 400, in decorator
+    return ctx.invoke(f, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_migrate/cli.py", line 157, in upgrade
+    _upgrade(directory or g.directory, revision, sql, tag, x_arg or g.x_arg)
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_migrate/__init__.py", line 111, in wrapped
+    f(*args, **kwargs)
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_migrate/__init__.py", line 200, in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/alembic/command.py", line 483, in upgrade
+    script.run_env()
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/alembic/script/base.py", line 551, in run_env
+    util.load_python_file(self.dir, "env.py")
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 114, in load_python_file
+    module = load_module_py(module_id, path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 134, in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/luna/Documents/prosecco/migrations/env.py", line 113, in <module>
+    run_migrations_online()
+  File "/home/luna/Documents/prosecco/migrations/env.py", line 99, in run_migrations_online
+    with connectable.connect() as connection:
+         ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3273, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2436, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3297, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 713, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 675, in __init__
+    self.__connect()
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 901, in __connect
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) unable to open database file
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
