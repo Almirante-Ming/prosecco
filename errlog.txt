@@ -1,0 +1,93 @@
+❯ poetry shell
+Spawning shell within /home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12
+❯ emulate bash -c '. /home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/bin/activate'
+_histdb_init:24: permission denied: /home/luna/.powerlevel10k/custom/plugins/zsh-histdb/histdb-migrate
+❯ task init
+/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_limiter/extension.py:324: UserWarning: Using the in-memory storage for tracking rate limits as no storage was explicitly specified. This is not recommended for production use. See: https://flask-limiter.readthedocs.io#configuring-a-storage-backend for documentation about configuring the storage backend.
+  warnings.warn(
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+[2025-06-26 15:52:36 -0400] [5188] [INFO] Starting gunicorn 23.0.0
+[2025-06-26 15:52:36 -0400] [5188] [INFO] Listening at: http://127.0.0.1:8000 (5188)
+[2025-06-26 15:52:36 -0400] [5188] [INFO] Using worker: sync
+[2025-06-26 15:52:36 -0400] [5189] [INFO] Booting worker with pid: 5189
+[2025-06-26 15:52:36 -0400] [5190] [INFO] Booting worker with pid: 5190
+[2025-06-26 15:52:36 -0400] [5191] [INFO] Booting worker with pid: 5191
+[2025-06-26 15:52:36 -0400] [5192] [INFO] Booting worker with pid: 5192
+/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_limiter/extension.py:324: UserWarning: Using the in-memory storage for tracking rate limits as no storage was explicitly specified. This is not recommended for production use. See: https://flask-limiter.readthedocs.io#configuring-a-storage-backend for documentation about configuring the storage backend.
+  warnings.warn(
+/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_limiter/extension.py:324: UserWarning: Using the in-memory storage for tracking rate limits as no storage was explicitly specified. This is not recommended for production use. See: https://flask-limiter.readthedocs.io#configuring-a-storage-backend for documentation about configuring the storage backend.
+  warnings.warn(
+/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_limiter/extension.py:324: UserWarning: Using the in-memory storage for tracking rate limits as no storage was explicitly specified. This is not recommended for production use. See: https://flask-limiter.readthedocs.io#configuring-a-storage-backend for documentation about configuring the storage backend.
+  warnings.warn(
+/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask_limiter/extension.py:324: UserWarning: Using the in-memory storage for tracking rate limits as no storage was explicitly specified. This is not recommended for production use. See: https://flask-limiter.readthedocs.io#configuring-a-storage-backend for documentation about configuring the storage backend.
+  warnings.warn(
+[2025-06-26 15:52:50.843885] Tentativa de acesso de IP: 127.0.0.1
+[2025-06-26 15:52:50,916] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: devices
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/Documents/prosecco/prosecco/utils/custom_verify.py", line 52, in decorated_function
+    ).first()
+      ^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/luna/.cache/pypoetry/virtualenvs/prosecco-nxDX10QA-py3.12/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: devices
+[SQL: SELECT devices.id AS devices_id, devices.ip AS devices_ip, devices.user_id AS devices_user_id, devices.locale AS devices_locale, devices."group" AS devices_group, devices.a_state AS devices_a_state, devices.dt_created AS devices_dt_created, devices.dt_updated AS devices_dt_updated 
+FROM devices 
+WHERE devices.ip = ? AND devices.a_state = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('127.0.0.1', 'ACTIVE', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
