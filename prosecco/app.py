@@ -45,7 +45,7 @@ def ratelimit_exceeded(e):
     return 429
 
 @prosecco.route('/')
-@redirect_by_ip_group(default_redirect_endpoint='login_bp.login')
+@redirect_by_ip_group(default_redirect_endpoint='login')
 def painel():
     return redirect(url_for('login_bp.login'))
 

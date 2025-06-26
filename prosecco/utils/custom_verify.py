@@ -39,7 +39,7 @@ def ip_authorized_required(f):
     
     return decorated_function
 
-def redirect_by_ip_group(default_redirect_endpoint='login_bp.login'):
+def redirect_by_ip_group(default_redirect_endpoint='login'):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
