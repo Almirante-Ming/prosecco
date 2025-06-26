@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_login import LoginManager, login_required
-from prosecco.config import db, migrate, limiter, User_type, scheduler
+from prosecco.config import db, migrate, limiter, User_type, scheduler, BASE_DIR, UPLOAD_FOLDER, CONTROL_FOLDER
 from prosecco.utils import access_required, ip_authorized_required, redirect_by_ip_group,redirect_by_ip_group
-from prosecco.routes import login_auth, register_new, adm_route, upload_route, display_bp
+from prosecco.routes import login_auth, register_new, adm_route, upload_route, display_bp, control_bp
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
@@ -10,9 +10,6 @@ from datetime import timedelta
 load_dotenv('.env')
 
 prosecco = Flask(__name__)
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'img', 'uploads')
 
 prosecco.secret_key = os.getenv('SECRET_KEY')
 prosecco.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
@@ -42,6 +39,7 @@ prosecco.register_blueprint(register_new)
 prosecco.register_blueprint(adm_route)
 prosecco.register_blueprint(upload_route)
 prosecco.register_blueprint(display_bp)
+prosecco.register_blueprint(control_bp)
 
 def ratelimit_exceeded(e):
     return 429
@@ -71,7 +69,7 @@ def adm():
 
 @prosecco.route('/img')
 def img_root():
-    return render_template('painel_user.html')
+    return render_template('painel_add.html')
 
 @prosecco.route('/upload-form')
 @login_required

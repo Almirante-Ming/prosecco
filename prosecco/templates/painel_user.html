@@ -67,7 +67,6 @@
             <section id="uploadSection" class="section" style="display: none;">
   <div class="container">
     <div class="box">
-      <h2 class="title is-4 has-background-primary has-text-white p-3">Upload de Arquivo</h2>
       <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
         <div class="field">
           <label class="label">Escolha o arquivo (foto ou vídeo)</label>
@@ -82,22 +81,6 @@
             <input class="input" type="text" name="filename" id="filename" placeholder="Ex: minha_foto.jpg">
           </div>
         </div>
-
-        <div class="field">
-          <label class="label">Selecione os grupos de exibição:</label>
-          <div class="control">
-            <div class="select is-multiple is-fullwidth">
-              <select multiple size="4" name="monitors[]">
-                <option>Monitor 1 - Entrada</option>
-                <option>Monitor 2 - Cantina</option>
-                <option>Monitor 3 - Laboratório</option>
-                <option>Monitor 4 - Biblioteca</option>
-              </select>
-            </div>
-            <p class="help is-info mt-2">Segure Ctrl (Windows) ou Command (Mac) para selecionar mais de um.</p>
-          </div>
-        </div>
-
         <div class="field mt-5">
           <div class="control">
             <button type="submit" class="button is-success is-fullwidth is-medium">

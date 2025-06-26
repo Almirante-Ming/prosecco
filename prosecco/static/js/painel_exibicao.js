@@ -174,5 +174,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
         console.debug('[MÍDIA] Verificando atualizações do JSON...');
         carregarMidias(jsonFileName);
-    }, 600000);
+    }, 300000);
 });

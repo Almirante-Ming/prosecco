@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const sections = {
     upload: document.getElementById("uploadSection"),
     selecionar: document.getElementById("selecionarTelasSection"),
-    // Removed 'identificar' as there's no corresponding HTML section in the provided file
     gerenciar: document.getElementById("gerenciarContasSection"),
   };
 
