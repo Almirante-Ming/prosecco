@@ -1,0 +1,1 @@
+web: gunicorn prosecco.app:prosecco

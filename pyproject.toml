@@ -16,7 +16,8 @@ dependencies = [
     'flask-sqlalchemy (>=3.1.1,<4.0.0)',
     "flask-wtf (>=1.2.2,<2.0.0)",
     'python-dotenv (>=1.1.0,<2.0.0)',
-    'taskipy (>=1.14.1,<2.0.0)'
+    'taskipy (>=1.14.1,<2.0.0)',
+    "gunicorn (>=23.0.0,<24.0.0)"
 ]
 
 
@@ -28,7 +29,8 @@ build-backend = 'poetry.core.masonry.api'
 flask = "flask.cli:main"
 
 [tool.taskipy.tasks]
-run = 'flask --app prosecco/app run --host=0.0.0.0'
+run = 'gunicorn prosecco.app:prosecco'
+dev = 'flask --app prosecco/app run --host=0.0.0.0'
 db = 'flask --app prosecco/app db'
 init = 'task db upgrade head && task run'
 clean = 'find . -type d -name "__pycache__" -exec rm -rf {} + && find . -type f -name "*.pyc" -delete'

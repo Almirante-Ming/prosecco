@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - Painel IFMS</title>
-
+    <title>Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/painel_login.css') }}">
+    <script src="{{ url_for('static', filename='js/painel_login.js') }}" defer></script>
 </head>
 <body class="has-background-light is-flex is-flex-direction-column" style="min-height: 100vh;">
 
@@ -21,7 +21,7 @@
     <div class="box" style="width: 100%; max-width: 400px;">
         <form onsubmit="event.preventDefault(); Login();">
             <div class="field">
-                <label class="label">Usuário (E-mail)</label>
+                <label class="label">E-mail</label>
                 <div class="control">
                     <input class="input" type="text" id="usuario" placeholder="Digite seu e-mail">
                 </div>
@@ -50,28 +50,7 @@
 </main>
 
 <footer class="footer-login has-text-white has-text-centered">
-  <p>© 2025 IFMS - Campus Três Lagoas - TADS-4</p>
+  <p>© 2025 IFMS - TADS-4</p>
 </footer>
-
-<script>
-async function Login() {
-    const usuario = document.getElementById("usuario").value;
-    const senha = document.getElementById("senha").value;
-
-    const response = await fetch('/login/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ id: usuario, passphrase: senha })
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-        window.location.href = data.redirect_url;
-    } else {
-        document.getElementById("mensagem").innerHTML = data.error;
-    }
-}
-</script>
 </body>
 </html>

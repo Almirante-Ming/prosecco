@@ -40,4 +40,4 @@ def upload_file():
         trigger='date'
     )
 
-    return jsonify(success=True, message='Upload recebido e processamento iniciado', file_id=new_file.id), 202
+    return jsonify(success=True, message='arquivo recebido, processamento iniciado', file_id=new_file.id), 202

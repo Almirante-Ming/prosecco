@@ -40,7 +40,7 @@ def listar_jsons():
 def atualizar_json():
     filename = request.args.get('file')
     if not filename or not filename.endswith('.json') or '..' in filename:
-        return jsonify({"error": "Arquivo inválido"}), 400
+        return jsonify({"error": "Arquivo invalido"}), 400
 
     file_path = os.path.join(CONTROL_FOLDER, filename)
     if not os.path.exists(file_path):
@@ -55,24 +55,24 @@ def atualizar_json():
         if data == []:
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump([], f, indent=2, ensure_ascii=False)
-            return jsonify({"message": "JSON limpo com sucesso"}), 200
+            return jsonify({"message": "exibicao redefinida"}), 200
 
         if all(isinstance(item, dict) and 'file' in item and 'type' in item for item in data):
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
-            return jsonify({"message": "JSON atualizado com sucesso"}), 200
+            return jsonify({"message": "grupo atualizado com sucesso"}), 200
 
-        return jsonify({"error": "Formato inválido. Envie [] para limpar ou lista de objetos com file e type para atualizar."}), 400
+        return jsonify({"error": "Formato inválido."}), 400
 
     except Exception as e:
-        current_app.logger.exception("Erro ao atualizar JSON")
+        current_app.logger.exception("Erro ao atualizar o grupo")
         return jsonify({"error": str(e)}), 500
 
 @control_bp.route('/delete', methods=['PUT'])
 def deletar_arquivos_upload():
     arquivos = request.get_json(force=True)
     if not isinstance(arquivos, list):
-        return jsonify({'error': 'Esperado um array de nomes de arquivos'}), 400
+        return jsonify({'error': 'arquivos nao selecionados para delecao'}), 400
 
     erros = []
     for nome in arquivos:
