@@ -25,18 +25,25 @@ def create_new_user():
     passphrase = request.form.get('password')
     u_type = request.form.get('u_type')
     
-    if db.session.query(User).filter(User.email == email).first():
-        return jsonify(Sucess=False, error='user already exists'), 409
+    existing_user = db.session.query(User).filter(User.email == email).first()
+    
+    if existing_user:
+        if existing_user.u_state == User_state.DELETED:
+            existing_user.u_state = User_state.ACTIVE
+            db.session.commit()
+            return jsonify(success=False, error='user reactivated'), 201
+        
+        return jsonify(success=False, error='user already exists'), 409
 
     if not passphrase:
         return jsonify(success=False, error='Password is required'), 400
 
-    new_user = User(name=username, email=email, passphrase=hash_pass(passphrase), u_type=u_type, u_state=User_state.ACTIVE) #type:ignore
+    new_user = User(name=username,email=email,passphrase=hash_pass(passphrase),u_type=u_type,u_state=User_state.ACTIVE)  # type: ignore
         
     db.session.add(new_user)
     db.session.commit()
     
-    return jsonify(sucess=True), 201
+    return jsonify(success=True), 201
 
 @adm_route.route('/adm/user/<int:user_id>', methods=['PATCH'])
 def update_user(user_id):
@@ -92,7 +99,7 @@ def add_new_device():
 
     if not show_controler.exists():
         static_dir.mkdir(parents=True, exist_ok=True)
-        show_controler.write_text('[{"file": "","type": ""}]')
+        show_controler.write_text('[]')
 
     new_device = Device(user_id=user_id, ip=ip, group=group, locale=locale)  # type: ignore
 

@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`/control/set?file=${encodeURIComponent(destino)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify([{ file: '', type: '' }])
+      body: JSON.stringify([])
     })
     .then(res => res.json())
     .then(json => alert(json.message || 'Grupo redefinido'))
