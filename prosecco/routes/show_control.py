@@ -7,11 +7,26 @@ control_bp = Blueprint('control', __name__, url_prefix='/control')
 
 def detectar_tipo(nome_arquivo):
     ext = os.path.splitext(nome_arquivo)[1].lower()
-    if ext == '.mp4':
+    if ext in ['.mp4', '.webm', '.mov', '.avi', '.mkv']:
         return 'video'
-    elif ext == '.png':
+    elif ext in ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.tiff']:
         return 'image'
     return 'unknown'
+
+@control_bp.route('/views', methods=['GET'])
+def listar_midias():
+    arquivos = [
+        f for f in os.listdir(UPLOAD_FOLDER)
+        if f.lower().endswith((
+            '.mp4', '.webm', '.mov', '.avi', '.mkv',
+            '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.tiff'
+        ))
+    ]
+    midias = [
+        {'file': nome, 'type': detectar_tipo(nome)}
+        for nome in arquivos
+    ]
+    return jsonify(midias)
 
 @control_bp.route('/show', methods=['GET'])
 def listar_jsons():
@@ -20,18 +35,6 @@ def listar_jsons():
         if f.endswith('.json')
     ]
     return jsonify(arquivos)
-
-@control_bp.route('/views', methods=['GET'])
-def listar_midias():
-    arquivos = [
-        f for f in os.listdir(UPLOAD_FOLDER)
-        if f.lower().endswith(('.mp4', '.png'))
-    ]
-    midias = [
-        {'file': nome, 'type': detectar_tipo(nome)}
-        for nome in arquivos
-    ]
-    return jsonify(midias)
 
 @control_bp.route('/set', methods=['PUT'])
 def atualizar_json():

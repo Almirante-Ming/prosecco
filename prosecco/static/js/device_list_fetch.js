@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Erro ao carregar dispositivos:", error);
             const errorMessage = document.createElement("p");
-            errorMessage.textContent = "Nao foi possível carregar os dispositivos. Tente novamente mais tarde.";
+            errorMessage.textContent = "Não foi possível carregar os dispositivos. Tente novamente mais tarde.";
             errorMessage.style.color = "red";
             devicesListContainer.appendChild(errorMessage);
         }
@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const listContainer = document.createElement("div");
         listContainer.style.maxHeight = "300px";
         listContainer.style.overflowY = "auto";
+        listContainer.style.overflowX = "hidden";
         listContainer.style.padding = "10px";
 
         devices.forEach(device => {
@@ -51,19 +52,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 <p><strong>IP:</strong> ${device.ip}</p>
                 <p><strong>Grupo:</strong> ${device.group}</p>
                 <p><strong>Local:</strong> ${device.locale}</p>
-                <p><strong>Status:</strong> ${device.a_state}</p>
             `;
 
             const buttonsContainer = document.createElement("div");
-            buttonsContainer.style.display = "flex";
-            buttonsContainer.style.gap = "5px";
+            buttonsContainer.className = "buttons";
 
             const btnEdit = document.createElement("button");
             btnEdit.textContent = "Editar";
-            btnEdit.onclick = () => editDevice(device);
+            btnEdit.className = "button is-info is-small";
+            btnEdit.onclick = () => openEditModal(device);
 
             const btnDelete = document.createElement("button");
             btnDelete.textContent = "Excluir";
+            btnDelete.className = "button is-danger is-small";
             btnDelete.onclick = () => deleteDevice(device.id);
 
             buttonsContainer.appendChild(btnEdit);
@@ -78,29 +79,35 @@ document.addEventListener("DOMContentLoaded", function () {
         devicesListContainer.appendChild(listContainer);
     }
 
-    async function editDevice(device) {
-        const newIp = prompt("Novo IP:", device.ip);
-        if (newIp === null) return;
+    function openEditModal(device) {
+        document.getElementById("editDeviceId").value = device.id;
+        document.getElementById("editDeviceIp").value = device.ip;
+        document.getElementById("editDeviceGroup").value = device.group;
+        document.getElementById("editDeviceLocale").value = device.locale;
+        document.getElementById("editDeviceModal").classList.add("is-active");
+    }
 
-        const newLocale = prompt("Novo Local:", device.locale);
-        if (newLocale === null) return;
+    document.getElementById("closeEditModal").onclick =
+    document.getElementById("cancelEditDeviceBtn").onclick = () => {
+        document.getElementById("editDeviceModal").classList.remove("is-active");
+    };
 
-        const newGroup = prompt("Novo Grupo:", device.group);
-        if (newGroup === null) return;
+    document.getElementById("saveEditDeviceBtn").onclick = async () => {
+        const deviceId = document.getElementById("editDeviceId").value;
+        const newIp = document.getElementById("editDeviceIp").value;
+        const newGroup = document.getElementById("editDeviceGroup").value;
+        const newLocale = document.getElementById("editDeviceLocale").value;
 
         try {
-            const response = await fetch(`/adm/device/${device.id}`, {
+            const response = await fetch(`/adm/device/${deviceId}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ip: newIp,
-                    locale: newLocale,
-                    group: newGroup
-                })
+                body: JSON.stringify({ ip: newIp, group: newGroup, locale: newLocale })
             });
 
             if (response.ok) {
                 alert("Dispositivo atualizado com sucesso.");
+                document.getElementById("editDeviceModal").classList.remove("is-active");
                 fetchDevices();
             } else {
                 alert("Falha ao atualizar o dispositivo.");
@@ -109,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Erro ao comunicar com o servidor:", error);
             alert("Erro na comunicação com o servidor.");
         }
-    }
+    };
 
     async function deleteDevice(deviceId) {
         if (!confirm("Tem certeza que deseja excluir este dispositivo?")) return;

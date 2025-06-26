@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const limparBtn = document.getElementById('limparBtn');
 
   const deletarBtn = document.createElement('button');
-  deletarBtn.textContent = 'Deletar';
+  deletarBtn.textContent = 'Apagar Selecao';
   deletarBtn.className = 'button is-warning ml-2';
   document.querySelector('.field.is-grouped').appendChild(deletarBtn);
 
@@ -24,61 +24,85 @@ document.addEventListener('DOMContentLoaded', () => {
   modalClose.onclick = () => modal.classList.remove('is-active');
   document.querySelector('.modal-background').onclick = () => modal.classList.remove('is-active');
 
-  fetch('/control/show')
-    .then(res => res.json())
-    .then(files => {
-      jsonSelect.innerHTML = '';
-      files.forEach(file => {
-        if (typeof file === 'string') {
-          const opt = document.createElement('option');
-          opt.value = file;
-          opt.textContent = file.replace(/\.json$/, '');
-          jsonSelect.appendChild(opt);
-        }
+  function carregarJSONs() {
+    return fetch('/control/show')
+      .then(res => res.json())
+      .then(files => {
+        jsonSelect.innerHTML = '';
+        files.forEach(file => {
+          if (typeof file === 'string') {
+            const opt = document.createElement('option');
+            opt.value = file;
+            opt.textContent = file.replace(/\.json$/, '');
+            jsonSelect.appendChild(opt);
+          }
+        });
       });
-    });
+  }
 
-  fetch('/control/views')
-    .then(res => res.json())
-    .then(medias => {
-      mediaList.innerHTML = '';
-      medias.forEach(media => {
-        const column = document.createElement('div');
-        column.className = 'column is-one-quarter';
+  function detectarTipoPeloArquivo(filename) {
+    if (!filename) return null;
+    const ext = filename.split('.').pop().toLowerCase();
 
-        const card = document.createElement('div');
-        card.className = 'box has-background-grey-darker';
+    const imagens = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'svg', 'tiff'];
+    const videos = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv', 'flv', 'wmv'];
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = media.file;
-        checkbox.className = 'mr-2';
+    if (imagens.includes(ext)) return 'image';
+    if (videos.includes(ext)) return 'video';
 
-        const filePath = `/static/img/uploads/${media.file}`;
-        const mediaEl = document.createElement(media.type === 'image' ? 'img' : 'video');
-        mediaEl.src = filePath;
-        if (media.type === 'video') mediaEl.muted = true;
-        mediaEl.onclick = (e) => {
-          e.stopPropagation();
-          openModal(media.type, filePath);
-        };
+    return null;
+  }
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'media-card';
-        wrapper.appendChild(checkbox);
-        wrapper.appendChild(mediaEl);
+  function carregarMidias() {
+    return fetch('/control/views')
+      .then(res => res.json())
+      .then(medias => {
+        mediaList.innerHTML = '';
+        medias.forEach(media => {
+          if (!media.file) return;
 
-        card.appendChild(wrapper);
-        column.appendChild(card);
-        mediaList.appendChild(column);
+          const tipo = detectarTipoPeloArquivo(media.file);
+          if (!tipo) return;
+
+          const column = document.createElement('div');
+          column.className = 'column is-one-quarter';
+
+          const card = document.createElement('div');
+          card.className = 'box has-background-grey-darker';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.value = media.file;
+          checkbox.className = 'mr-2';
+
+          const filePath = `/static/img/uploads/${media.file}`;
+          const mediaEl = document.createElement(tipo === 'image' ? 'img' : 'video');
+          mediaEl.src = filePath;
+          if (tipo === 'video') mediaEl.muted = true;
+          mediaEl.onclick = (e) => {
+            e.stopPropagation();
+            openModal(tipo, filePath);
+          };
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'media-card';
+          wrapper.appendChild(checkbox);
+          wrapper.appendChild(mediaEl);
+
+          card.appendChild(wrapper);
+          column.appendChild(card);
+          mediaList.appendChild(column);
+        });
       });
-    });
+  }
+
+  Promise.all([carregarJSONs(), carregarMidias()]);
 
   atribuirBtn.onclick = () => {
     const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
     const data = checked.map(cb => {
-      const type = cb.value.endsWith('.png') ? 'image' : 'video';
-      return { file: cb.value, type };
+      const tipo = detectarTipoPeloArquivo(cb.value);
+      return { file: cb.value, type: tipo || 'image' };
     });
 
     const destino = jsonSelect.value;
@@ -88,7 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify(data)
     })
     .then(res => res.json())
-    .then(json => alert(json.message || 'Arquivo atualizado!'));
+    .then(json => alert(json.message || 'Arquivo atualizado!'))
+    .then(() => carregarMidias());
   };
 
   limparBtn.onclick = () => {
@@ -99,7 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify([{ file: '', type: '' }])
     })
     .then(res => res.json())
-    .then(json => alert(json.message || 'Arquivo limpo!'));
+    .then(json => alert(json.message || 'Grupo redefinido'))
+    .then(() => carregarMidias());
   };
 
   deletarBtn.onclick = () => {
@@ -116,6 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(deletarArquivos)
     })
     .then(res => res.json())
-    .then(json => alert(json.message || 'Itens deletados do arquivo!'));
+    .then(json => alert(json.message || 'Itens deletados'))
+    .then(() => carregarMidias());
   };
+
+  window.carregarMidias = carregarMidias;
 });

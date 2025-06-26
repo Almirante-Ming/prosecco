@@ -11,6 +11,7 @@ form.addEventListener('submit', async function (e) {
             method: 'POST',
             body: formData
         });
+
         const data = await res.json();
 
         responseDiv.classList.remove('is-hidden', 'is-danger', 'is-success');
@@ -18,16 +19,29 @@ form.addEventListener('submit', async function (e) {
         if (data.success) {
             responseDiv.classList.add('is-success');
             responseDiv.textContent = data.message || 'Upload realizado com sucesso!';
+
+            setTimeout(() => {
+                if (window.carregarMidias) {
+                    window.carregarMidias();
+                }
+                form.reset();
+            }, 1000);
         } else {
             responseDiv.classList.add('is-danger');
             responseDiv.textContent = data.error || 'Erro no upload.';
+            hideMessage();
         }
     } catch (err) {
         responseDiv.classList.remove('is-hidden', 'is-success');
         responseDiv.classList.add('is-danger');
         responseDiv.textContent = 'Erro ao enviar o formulário.';
-    } finally {
-        setTimeout(() => {
-            responseDiv.classList.add('is-hidden');}, 5000);
+        hideMessage();
     }
+
+    function hideMessage() {
+        setTimeout(() => {
+            responseDiv.classList.add('is-hidden');
+        }, 5000);
+    }
+
 });
