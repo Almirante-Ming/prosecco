@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_login import LoginManager, login_required
 from prosecco.config import db, migrate, limiter, User_type, scheduler, BASE_DIR, UPLOAD_FOLDER, CONTROL_FOLDER
 from prosecco.utils import access_required, ip_authorized_required, redirect_by_ip_group,redirect_by_ip_group
@@ -43,6 +43,12 @@ prosecco.register_blueprint(control_bp)
 
 def ratelimit_exceeded(e):
     return 429
+
+
+def enforce_https():
+    if not request.is_secure:
+        url = request.url.replace("http://", "https://", 1)
+        return redirect(url, code=301)
 
 @prosecco.route('/')
 @redirect_by_ip_group(default_redirect_endpoint='login')
