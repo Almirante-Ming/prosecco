@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, url_for
-from flask_talisman import Talisman
 from flask_login import LoginManager, login_required
 from prosecco.config import db, migrate, limiter, User_type, scheduler, BASE_DIR, UPLOAD_FOLDER, CONTROL_FOLDER
 from prosecco.utils import access_required, ip_authorized_required, redirect_by_ip_group,redirect_by_ip_group
@@ -11,7 +10,6 @@ from datetime import timedelta
 load_dotenv('.env')
 
 prosecco = Flask(__name__)
-Talisman(prosecco)
 
 prosecco.secret_key = os.getenv('SECRET_KEY')
 prosecco.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
