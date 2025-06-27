@@ -70,7 +70,7 @@ def adm():
 @prosecco.route('/usr')
 @login_required
 @access_required(User_type.USER)
-def img_root():
+def usr():
     return render_template('painel_user.html')
 
 if __name__ == '__main__':

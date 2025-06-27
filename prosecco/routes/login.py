@@ -14,29 +14,32 @@ def auth():
     passphrase_do_formulario = request.form.get('passphrase')
 
     if not email_do_formulario or not passphrase_do_formulario:
-        return jsonify(success=False, error="Email e senha são obrigatórios"), 400
+        return jsonify(success=False, error="Email e senha sao obrigatorios"), 400
 
     user = db.session.query(User).filter(User.email == email_do_formulario).first()
 
     if not user:
-        return jsonify(success=False, error="Usuário não encontrado"), 404
+        return jsonify(success=False, error="Usuario nao encontrado"), 404
 
     if not user.is_active_account():
-        return jsonify(success=False, error="Problemas com o cadastro, contacte um administrador"), 403
+        return jsonify(success=False, error="Problemas com o cadastro"), 403
 
     if not check_password_hash(user.passphrase, passphrase_do_formulario):
         return jsonify(success=False, error="Credenciais inválidas"), 401
 
-    client_ip = request.remote_addr
-    if user.u_type != User_type.ADMIN:
-        allowed = any(device.ip_address == client_ip and device.status == 'active' for device in user.devices) # type: ignore
-        if not allowed:
-            return jsonify(success=False, error="não autorizado. usuario sem permissoes"), 403
 
     login_user(user)
     session.permanent = True
 
-    return jsonify(success=True, redirect_url=url_for('adm')), 200
+    if user.u_type == User_type.ADMIN:
+        redirect_url = url_for('adm')
+    elif user.u_type == User_type.USER:
+        redirect_url = url_for('usr')
+    else:
+        return jsonify(success=False, error="Usuario nao encontrado"), 403
+
+    return jsonify(success=True, redirect_url=redirect_url), 200
+
 
 @login_auth.route('/logout', methods=['GET'])
 @login_required

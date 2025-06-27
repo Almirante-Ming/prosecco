@@ -91,9 +91,25 @@ def add_new_device():
     group = request.form.get('group')
     user_id = current_user.id
 
-    if db.session.query(Device).filter(Device.ip == ip).first() is not None:
-        return jsonify(success=False, error='This device is already in the system'), 409
-    
+    reserved_paths = {str(rule.rule).lstrip('/') for rule in current_app.url_map.iter_rules()}
+    reserved_paths_lower = {r.lower() for r in reserved_paths}
+
+    if group and group.lower() in reserved_paths_lower:
+        return jsonify(success=False, error='Nome de grupo invalido'), 400
+
+    existing_device = db.session.query(Device).filter(Device.ip == ip).first()
+
+    if existing_device and existing_device.a_state == Device_state.ACTIVE:
+        return jsonify(success=False, error='Dispositivo ja cadastrado no sistema'), 409
+
+    if existing_device and existing_device.a_state == Device_state.DELETED:
+        existing_device.a_state = Device_state.ACTIVE
+        existing_device.group = group
+        existing_device.locale = locale
+        existing_device.user_id = user_id
+        db.session.commit()
+        return jsonify(success=True, message='Dispositivo reativado com sucesso'), 200
+
     static_dir = Path(current_app.root_path) / 'static' / 'show_control'
     show_controler = static_dir / f'{group}.json'
 
@@ -102,11 +118,10 @@ def add_new_device():
         show_controler.write_text('[]')
 
     new_device = Device(user_id=user_id, ip=ip, group=group, locale=locale)  # type: ignore
-
     db.session.add(new_device)
     db.session.commit()
 
-    return jsonify(success=True, message='Device added successfully'), 201
+    return jsonify(success=True, message='Dispositivo adicionado com sucesso'), 201
 
 
 
@@ -114,7 +129,7 @@ def add_new_device():
 def update_device(device_id):
     device = db.session.query(Device).filter(Device.id == device_id).first()
     if not device:
-        return jsonify(success=False, error='Device not found'), 404
+        return jsonify(success=False, error='Dispositivo nao encontrado'), 404
 
     data = request.json
     if 'ip' in data:  # type: ignore
@@ -127,7 +142,7 @@ def update_device(device_id):
         device.user_id = data['user_id']  # type: ignore
 
     db.session.commit()
-    return jsonify(success=True, message='Device updated successfully'), 200
+    return jsonify(success=True, message='Dispositivo atualizado com sucesso'), 200
 
 
 @adm_route.route('/adm/device/<int:device_id>', methods=['DELETE'])

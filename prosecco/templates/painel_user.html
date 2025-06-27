@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Painel de controle</title>
+    <title>Prosecco Web Painel</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/bulma.min.css') }}"
@@ -17,23 +17,11 @@
       href="{{ url_for('static', filename='css/painel_adm.css') }}"
     />
     <script
-      src="{{ url_for('static', filename='js/painel_adm.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/user_list_fetch.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/user_adm_add.js') }}"
+      src="{{ url_for('static', filename='js/painel_usr.js') }}"
       defer
     ></script>
     <script
       src="{{ url_for('static', filename='js/device_list_fetch.js') }}"
-      defer
-    ></script>
-    <script
-      src="{{ url_for('static', filename='js/device_adm_add.js') }}"
       defer
     ></script>
     <script
@@ -64,7 +52,7 @@
             <i class="fas fa-bars fa-2x" style="color: white"></i>
           </span>
         </button>
-        <h1 class="header-title has-text-white ml-3">Painel Administrativo</h1>
+        <h1 class="header-title has-text-white ml-3">Gerenciamento de Transmissao</h1>
       </div>
 
       <div class="is-flex is-align-items-center">
@@ -88,30 +76,24 @@
             <i class="fas fa-times"></i>
           </span>
         </button>
-        <p class="menu-label">Administração</p>
-        <ul class="menu-list">
-          <li>
-            <a id="inicioLink"><i class="fas fa-home mr-2"></i>Início</a>
-          </li>
-          <li>
-            <a><i class="fas fa-image mr-2"></i>Rotas de Exibição</a>
-          </li>
-          <li>
-            <a><i class="fas fa-tv mr-2"></i>Gerenciar Telas</a>
-          </li>
-          <li>
-            <a><i class="fas fa-users-cog mr-2"></i>Gerenciar Contas</a>
-          </li>
-          <li>
-            <a href="{{ url_for('login_auth.logout') }}" class="button">Sair</a>
-          </li>
-        </ul>
+        <p class="menu-label">Gerenciamento</p>
+<ul class="menu-list">
+  <li>
+    <a id="inicioLink"><i class="fas fa-home mr-2"></i>Início</a>
+  </li>
+  <li>
+    <a id="rotasLink"><i class="fas fa-image mr-2"></i>Rotas de Exibição</a>
+  </li>
+  <li>
+    <a href="{{ url_for('login_auth.logout') }}" class="button">Sair</a>
+  </li>
+</ul>
       </aside>
 
       <main class="column p-5">
         <section class="section">
           <div class="container">
-            <h2 class="title is-4">Bem-vindo, Administrador</h2>
+            <h2 class="title is-4">Bem-vindo, Usuario</h2>
             <p class="subtitle is-6">
               Selecione uma opção no menu à esquerda para começar.
             </p>
@@ -121,12 +103,6 @@
                 <div class="box" id="devices_list">
                   <h3 class="title is-5">Telas Registradas</h3>
                   <p>Visualize os dispositivos registrados na rede.</p>
-                </div>
-              </div>
-              <div class="column is-6">
-                <div class="box" id="users_list">
-                  <h3 class="title is-5">Contas de Usuário</h3>
-                  <p>autorize, edite ou remova usuários.</p>
                 </div>
               </div>
             </div>
