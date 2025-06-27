@@ -1,4 +1,7 @@
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+import os
 
-limiter = Limiter(key_func=get_remote_address)
+limiter_storage=os.getenv('RATELIMIT_STORAGE_URL')
+
+limiter = Limiter(key_func=get_remote_address, storage_uri=limiter_storage)
