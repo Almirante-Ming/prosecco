@@ -11,6 +11,7 @@ from datetime import timedelta
 load_dotenv('.env')
 
 prosecco = Flask(__name__)
+Talisman(prosecco)
 
 prosecco.secret_key = os.getenv('SECRET_KEY')
 prosecco.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
@@ -23,7 +24,6 @@ db.init_app(prosecco)
 migrate.init_app(prosecco, db)
 limiter.init_app(prosecco)
 
-Talisman(prosecco, force_https=True, strict_transport_security=True, strict_transport_security_max_age=15768000)
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'  # type: ignore
