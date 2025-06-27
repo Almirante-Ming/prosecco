@@ -223,6 +223,18 @@ flask = ">=2.2.5"
 sqlalchemy = ">=2.0.16"
 
 [[package]]
+name = "flask-talisman"
+version = "1.1.0"
+description = "HTTP security headers for Flask."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "flask-talisman-1.1.0.tar.gz", hash = "sha256:c5f486f5f54420729f84b3c3850cd63f96e8b033a9629bee66c524ea363797ff"},
+    {file = "flask_talisman-1.1.0-py2.py3-none-any.whl", hash = "sha256:3c42b610ebe49b0e35ca150e179bf51aa1da01e4635b49a674868ea681046208"},
+]
+
+[[package]]
 name = "flask-wtf"
 version = "1.2.2"
 description = "Form rendering, validation, and CSRF protection for Flask with WTForms."
@@ -995,4 +1007,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.1"
 python-versions = "3.12.10"
-content-hash = "5830bb9c46e82c9c59adf8f15b701813d3a01223e0a907666f73fd4d349938c9"
+content-hash = "4f07981df3d2d55edd37691d8db7ca8e99a3eb4040614de98465aaf274b51cb8"

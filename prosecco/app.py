@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for
+from flask_talisman import Talisman
 from flask_login import LoginManager, login_required
 from prosecco.config import db, migrate, limiter, User_type, scheduler, BASE_DIR, UPLOAD_FOLDER, CONTROL_FOLDER
 from prosecco.utils import access_required, ip_authorized_required, redirect_by_ip_group,redirect_by_ip_group
@@ -22,6 +23,8 @@ db.init_app(prosecco)
 migrate.init_app(prosecco, db)
 limiter.init_app(prosecco)
 
+Talisman(prosecco, force_https=True, strict_transport_security=True, strict_transport_security_max_age=15768000)
+
 login_manager = LoginManager()
 login_manager.login_view = 'login'  # type: ignore
 login_manager.init_app(prosecco)
@@ -44,11 +47,6 @@ prosecco.register_blueprint(control_bp)
 def ratelimit_exceeded(e):
     return 429
 
-
-def enforce_https():
-    if not request.is_secure:
-        url = request.url.replace("http://", "https://", 1)
-        return redirect(url, code=301)
 
 @prosecco.route('/')
 @redirect_by_ip_group(default_redirect_endpoint='login')
