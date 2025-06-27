@@ -29,7 +29,7 @@ build-backend = 'poetry.core.masonry.api'
 flask = "flask.cli:main"
 
 [tool.taskipy.tasks]
-run = 'gunicorn -w 4 -b 0.0.0.0 prosecco.app:prosecco'
+run = 'gunicorn --certfile=wine.crt --keyfile=liave.key -w 4 -b 0.0.0.0 -t 180 prosecco.app:prosecco'
 dev = 'flask --app prosecco/app run --host=0.0.0.0'
 db = 'flask --app prosecco/app db'
 init = 'task db upgrade head && task run'

@@ -1,136 +1,469 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gerenciamento de Transmissao</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/painel_adm.css') }}">
-    <script src="{{ url_for('static', filename='js/painel_adm.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/device_online_fetch.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/form_media_upload.js') }}" defer></script>
-</head>
+    <title>Painel de controle</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bulma.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/all.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/painel_adm.css') }}"
+    />
+    <script
+      src="{{ url_for('static', filename='js/painel_adm.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/user_list_fetch.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/user_adm_add.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/device_list_fetch.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/device_adm_add.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/show_control.js') }}"
+      defer
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/form_media_upload.js') }}"
+      defer
+    ></script>
+  </head>
 
-<body data-username="{{ current_user.name }}" class="has-background-light is-flex is-flex-direction-column" style="min-height: 100vh;">
-    <header class="header-login is-flex is-align-items-center is-justify-content-space-between px-4 py-2">
-        <div class="is-flex is-align-items-center">
-            <button class="hamburger-toggle" id="menuToggle" aria-label="Abrir menu">
-                <span class="icon is-large">
-                    <i class="fas fa-bars fa-2x" style="color: white;"></i>
-                </span>
-            </button>
-            <h1 class="header-title has-text-white ml-3">Gerencador de Transmissoes</h1>
-        </div>
+  <body
+    data-username="{{ current_user.name }}"
+    class="has-background-light is-flex is-flex-direction-column"
+    style="min-height: 100vh"
+  >
+    <header
+      class="header-login is-flex is-align-items-center is-justify-content-space-between px-4 py-2"
+    >
+      <div class="is-flex is-align-items-center">
+        <button
+          class="hamburger-toggle"
+          id="menuToggle"
+          aria-label="Abrir menu"
+        >
+          <span class="icon is-large">
+            <i class="fas fa-bars fa-2x" style="color: white"></i>
+          </span>
+        </button>
+        <h1 class="header-title has-text-white ml-3">Painel Administrativo</h1>
+      </div>
 
-        <div class="is-flex is-align-items-center">
-            <div class="logo-box-ifms is-flex is-align-items-center mr-4">
-                <img src="{{ url_for('static', filename='img/ifms-tl-marca-2015-dark.png') }}" alt="Logo IFMS" />
-            </div>
+      <div class="is-flex is-align-items-center">
+        <div class="logo-box-ifms is-flex is-align-items-center mr-4">
+          <img
+            src="{{ url_for('static', filename='img/ifms-tl-marca-2015-dark.png') }}"
+            alt="Logo IFMS"
+          />
         </div>
+      </div>
     </header>
 
-    <div class="columns is-gapless" style="flex: 1; min-height: 0;">
-        <aside class="admin-sidebar menu" id="adminSidebar">
-            <button class="close-sidebar" id="closeSidebar" aria-label="Fechar menu">
-                <span class="icon">
-                    <i class="fas fa-times"></i>
-                </span>
-            </button>
-            <p class="menu-label">Opcoes</p>
-            <ul class="menu-list">
-                <li><a id="inicioLink"><i class="fas fa-home mr-2"></i>Início</a></li>
-                <li><a><i class="fas fa-image mr-2"></i>Upload de Medias</a></li>
-                <li><a><i class="fas fa-tv mr-2"></i>Gerenciar Telas</a></li>
-                <li><a href="{{ url_for('login_auth.logout') }}" class="button">Sair</a></li>
-            </ul>
-        </aside>
+    <div class="columns is-gapless" style="flex: 1; min-height: 0">
+      <aside class="admin-sidebar menu" id="adminSidebar">
+        <button
+          class="close-sidebar"
+          id="closeSidebar"
+          aria-label="Fechar menu"
+        >
+          <span class="icon">
+            <i class="fas fa-times"></i>
+          </span>
+        </button>
+        <p class="menu-label">Administração</p>
+        <ul class="menu-list">
+          <li>
+            <a id="inicioLink"><i class="fas fa-home mr-2"></i>Início</a>
+          </li>
+          <li>
+            <a><i class="fas fa-image mr-2"></i>Rotas de Exibição</a>
+          </li>
+          <li>
+            <a><i class="fas fa-tv mr-2"></i>Gerenciar Telas</a>
+          </li>
+          <li>
+            <a><i class="fas fa-users-cog mr-2"></i>Gerenciar Contas</a>
+          </li>
+          <li>
+            <a href="{{ url_for('login_auth.logout') }}" class="button">Sair</a>
+          </li>
+        </ul>
+      </aside>
 
-        <main class="column p-5">
-            <section class="section">
-                <div class="container">
-                    <h2 class="title is-4">Bem-vindo, Administrador</h2>
-                    <p class="subtitle is-6">Selecione uma opção no menu à esquerda para começar.</p>
+      <main class="column p-5">
+        <section class="section">
+          <div class="container">
+            <h2 class="title is-4">Bem-vindo, Administrador</h2>
+            <p class="subtitle is-6">
+              Selecione uma opção no menu à esquerda para começar.
+            </p>
 
-                    <div class="columns is-multiline">
-                        <div class="column is-6">
-                            <div class="box" id="devices_list">
-                                <h3 class="title is-5">Telas Registradas</h3>
-                                <p>Visualize os dispositivos registrados na rede.</p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="columns is-multiline">
+              <div class="column is-6">
+                <div class="box" id="devices_list">
+                  <h3 class="title is-5">Telas Registradas</h3>
+                  <p>Visualize os dispositivos registrados na rede.</p>
                 </div>
-            </section>
-
-            <section id="uploadSection" class="section" style="display: none;">
-  <div class="container">
-    <div class="box">
-      <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
-        <div class="field">
-          <label class="label">Escolha o arquivo (foto ou vídeo)</label>
-          <div class="control">
-            <input class="input" type="file" name="file" id="file" required>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Nome opcional do arquivo</label>
-          <div class="control">
-            <input class="input" type="text" name="filename" id="filename" placeholder="Ex: minha_foto.jpg">
-          </div>
-        </div>
-        <div class="field mt-5">
-          <div class="control">
-            <button type="submit" class="button is-success is-fullwidth is-medium">
-              <i class="fas fa-upload mr-2"></i> Enviar
-            </button>
-          </div>
-        </div>
-      </form>
-
-      <div id="response" class="notification is-hidden mt-4"></div>
-    </div>
-  </div>
-</section>
-
-
-            <section id="selecionarTelasSection" class="section" style="display: none;">
-                <div class="container">
-                    <h2 class="title is-4">Selecionar Telas de Exibição</h2>
-                    <p class="mb-4">Selecione quais telas devem exibir os conteúdos atuais:</p>
-
-                    <div class="columns is-multiline">
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 1 - Entrada
-                            </label>
-                        </div>
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 2 - Cantina
-                            </label>
-                        </div>
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 3 - Laboratório
-                            </label>
-                        </div>
-                        <div class="column is-6">
-                            <label class="checkbox">
-                                <input type="checkbox" /> Monitor 4 - Biblioteca
-                            </label>
-                        </div>
-                    </div>
-                    <button class="button is-success mt-4">Confirmar Telas Selecionadas</button>
+              </div>
+              <div class="column is-6">
+                <div class="box" id="users_list">
+                  <h3 class="title is-5">Contas de Usuário</h3>
+                  <p>autorize, edite ou remova usuários.</p>
                 </div>
-            </section>
-        </main>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="uploadSection" class="section" style="display: none">
+          <div class="container">
+            <h1 class="title has-text-success">Gerenciamento de Exibicao</h1>
+            <div class="columns is-multiline">
+              <!-- Painel de mídias (60%) -->
+              <div class="column is-7">
+                <div class="field is-grouped mb-4">
+                  <div class="control">
+                    <div class="select">
+                      <select id="jsonSelect">
+                        <option disabled selected>Carregando Grupos...</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="control">
+                    <button id="atribuirBtn" class="button is-success">
+                      Atribuir Mídia
+                    </button>
+                  </div>
+                  <div class="control">
+                    <button id="limparBtn" class="button is-danger">
+                      Redefinir Exibição
+                    </button>
+                  </div>
+                </div>
+                <div class="columns is-multiline" id="mediaList"></div>
+              </div>
+
+              <!-- Formulário de upload (40%) -->
+              <div class="column is-5">
+                <div class="box p-4">
+                  <form
+                    id="uploadForm"
+                    action="/upload"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
+                    <div class="field mb-3">
+                      <label class="label is-small">Upload de Arquivos</label>
+                      <div class="control">
+                        <input
+                          class="input is-small"
+                          type="file"
+                          name="file"
+                          id="file"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div class="field mb-3">
+                      <label class="label is-small">Nome opcional</label>
+                      <div class="control">
+                        <input
+                          class="input is-small"
+                          type="text"
+                          name="filename"
+                          id="filename"
+                          placeholder="Ex: minha_foto.jpg"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="field mt-4">
+                      <div class="control">
+                        <button
+                          type="submit"
+                          class="button is-success is-fullwidth is-small"
+                        >
+                          <i class="fas fa-upload mr-1"></i> Enviar
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <div id="response" class="notification is-hidden mt-4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal de visualização -->
+          <div class="modal" id="mediaModal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+              <div id="modalContent"></div>
+            </div>
+            <button
+              class="modal-close is-large"
+              aria-label="close"
+              id="modalClose"
+            ></button>
+          </div>
+        </section>
+
+        <section
+          id="selecionarTelasSection"
+          class="section"
+          style="display: none"
+        >
+          <div class="container">
+            <div class="columns is-multiline">
+              <div class="column is-12">
+                <div class="box">
+                  <h3 class="title is-5 mb-3">Adicionar Nova Tela</h3>
+
+                  <div class="field">
+                    <label class="label">IP</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="text"
+                        placeholder="endereço IPV4"
+                        id="deviceIp"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Grupo</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="text"
+                        placeholder="Digite o grupo ao qual a tela pertence"
+                        id="deviceGroup"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Localização</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="text"
+                        placeholder="Onde a tela está instalada"
+                        id="deviceLocale"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Campo oculto com o ID do usuário logado -->
+                  <input
+                    type="hidden"
+                    id="deviceUser"
+                    value="{{ current_user.id }}"
+                  />
+
+                  <div class="field mt-4">
+                    <div class="control">
+                      <button
+                        class="button is-primary is-fullwidth"
+                        id="cadastrarTelaBtn"
+                      >
+                        Adicionar Tela
+                      </button>
+                    </div>
+                  </div>
+
+                  <p id="deviceFeedbackMessage" class="mt-3"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="gerenciarContasSection"
+          class="section"
+          style="display: none"
+        >
+          <div class="container">
+            <h2 class="title is-4">Adicionar Contas</h2>
+            <div class="columns is-multiline">
+              <div class="column is-12">
+                <div class="box">
+                  <h3 class="title is-5 mb-3">Adicionar Novo Usuário</h3>
+
+                  <div class="field">
+                    <label class="label">Nome</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="text"
+                        placeholder="Nome do usuário"
+                        id="userName"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="email"
+                        placeholder="email@ifms.edu.br"
+                        id="userEmail"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Passphrase</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="password"
+                        placeholder="digite sua senha"
+                        id="userPassphrase"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Tipo</label>
+                    <div class="control">
+                      <div class="select is-fullwidth">
+                        <select id="userType">
+                          <option value="USER">Usuário Comum</option>
+                          <option value="ADMIN">Administrador</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="field mt-4">
+                    <div class="control">
+                      <button
+                        class="button is-primary is-fullwidth"
+                        id="criarContaBtn"
+                      >
+                        Criar Conta
+                      </button>
+                    </div>
+                  </div>
+                  <p id="feedbackMessage" class="mt-3"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
 
     <footer class="footer-login has-text-white has-text-centered">
-        <p>© 2025 IFMS - TADS-4</p>
+      <p>© 2025 IFMS - TADS-4</p>
     </footer>
-</body>
+    <div id="modalChangePassword" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card" style="max-width: 400px">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Alterar Senha</p>
+          <button class="delete" aria-label="close" id="modalCloseBtn"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="field">
+            <label class="label">Nova Senha</label>
+            <div class="control">
+              <input
+                id="inputNewPassword"
+                class="input"
+                type="password"
+                placeholder="Digite a nova senha"
+              />
+            </div>
+          </div>
+          <p id="modalErrorMsg" class="has-text-danger is-hidden"></p>
+        </section>
+        <footer class="modal-card-foot">
+          <button id="btnSavePassword" class="button is-success">Salvar</button>
+          <button id="btnCancelPassword" class="button">Cancelar</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="editDeviceModal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Editar Dispositivo</p>
+          <button
+            class="delete"
+            aria-label="close"
+            id="closeEditModal"
+          ></button>
+        </header>
+        <section class="modal-card-body">
+          <input type="hidden" id="editDeviceId" />
+          <div class="field">
+            <label class="label">IP</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                id="editDeviceIp"
+                placeholder="Digite o novo IP"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Grupo</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                id="editDeviceGroup"
+                placeholder="Digite o novo Grupo"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Local</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                id="editDeviceLocale"
+                placeholder="Digite o novo Local"
+              />
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" id="saveEditDeviceBtn">
+            Salvar
+          </button>
+          <button class="button" id="cancelEditDeviceBtn">Cancelar</button>
+        </footer>
+      </div>
+    </div>
+  </body>
 </html>

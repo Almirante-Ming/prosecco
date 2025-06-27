@@ -67,16 +67,13 @@ def recovery():
 def adm():
     return render_template('painel_adm.html')
 
-@prosecco.route('/img')
-def img_root():
-    return render_template('painel_add.html')
-
-@prosecco.route('/upload-form')
+@prosecco.route('/usr')
 @login_required
-def upload_form():
-    return render_template('upload.html')
+@access_required(User_type.USER)
+def img_root():
+    return render_template('painel_user.html')
 
 if __name__ == '__main__':
     scheduler.init_app(prosecco)
     scheduler.start()
-    prosecco.run(debug=True)
+    prosecco.run(ssl_context=('wine.crt', 'liave.key'))
