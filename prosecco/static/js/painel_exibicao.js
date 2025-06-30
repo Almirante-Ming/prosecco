@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const jsonFileName = document.body.dataset.jsonFile || 'show_control/system.json';
   let mediaFiles = [];
   let currentIndex = 0;
+  let lastJsonHash = null;
+
+  function hashObject(obj) {
+    return JSON.stringify(obj);
+  }
 
   async function showNextMedia() {
     if (!carouselContentArea) return;
@@ -94,11 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response) {
           console.debug(`[MÍDIA] Baixando: ${media.file}`);
           response = await fetch(url);
-          if (response.ok) {
-            await cache.put(url, response.clone());
-          } else {
-            throw new Error(`Erro ao baixar ${url}`);
-          }
+          if (response.ok) await cache.put(url, response.clone());
+          else throw new Error(`Erro ao baixar ${url}`);
         } else {
           console.debug(`[MÍDIA] Reutilizando cache: ${media.file}`);
         }
@@ -148,14 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function carregarMidias(jsonPath) {
+  async function verificarAtualizacaoMidias(jsonPath) {
     try {
-      console.debug(`[MÍDIA] Forçando atualização do cache...`);
-      if ('caches' in window) {
-        await caches.delete('media-cache-template');
-      }
-
-      const response = await fetch(`/static/${jsonPath}`);
+      const response = await fetch(`/static/${jsonPath}?_=${Date.now()}`);
       if (!response.ok) throw new Error(`Erro ao carregar configuracao: ${response.status}`);
       const midias = await response.json();
 
@@ -164,21 +161,33 @@ document.addEventListener('DOMContentLoaded', () => {
       );
       if (!midiasValidas) throw new Error("arquivo de configuracao invalido.");
 
-      mediaFiles = midias;
-      currentIndex = 0;
-      showNextMedia();
+      const novoHash = hashObject(midias);
+      if (novoHash !== lastJsonHash) {
+        console.debug("[MÍDIA] Mudança detectada no arquivo de configuração.");
+        lastJsonHash = novoHash;
+
+        if ('caches' in window) {
+          console.debug(`[MÍDIA] Limpando cache de mídia...`);
+          await caches.delete('media-cache-template');
+        }
+
+        mediaFiles = midias;
+        currentIndex = 0;
+        showNextMedia();
+      } else {
+        console.debug("[MÍDIA] Nenhuma alteração detectada.");
+      }
     } catch (err) {
-      console.error("Erro ao carregar mídias:", err);
-      if (carouselContentArea) {
+      console.error("Erro ao verificar atualização das mídias:", err);
+      if (carouselContentArea && mediaFiles.length === 0) {
         carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Erro ao carregar mídias.</p>';
       }
     }
   }
 
-  carregarMidias(jsonFileName);
-
+  verificarAtualizacaoMidias(jsonFileName);
   setInterval(() => {
-    console.debug('[MÍDIA] Verificando atualizações do arquivo de configuracao...');
-    carregarMidias(jsonFileName);
-  }, 300000);
+    console.debug('[MÍDIA] Verificando atualizações do arquivo de configuração...');
+    verificarAtualizacaoMidias(jsonFileName);
+  }, 60000);
 });
