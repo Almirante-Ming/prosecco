@@ -1,7 +1,6 @@
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import os
+import redis
 
-limiter_storage=os.getenv('RATELIMIT_STORAGE_URL')
-
-limiter = Limiter(key_func=get_remote_address, storage_uri=limiter_storage)
+limiter = Limiter(get_remote_address, storage_uri='redis://localhost:6379')

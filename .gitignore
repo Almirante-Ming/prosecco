@@ -13,6 +13,5 @@ Thumbs.db
 *.tmp
 *.db
 
-prosecco/static/img/uploads/*.mp4
-prosecco/static/img/uploads/*.png
+prosecco/static/img/uploads/*
 prosecco/static/show_control/*
