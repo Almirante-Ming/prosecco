@@ -8,14 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const welcomeSubtitle = welcomeSection?.querySelector("p.subtitle");
 
   const sections = {
-    rotas: document.getElementById("uploadSection"), // ou o ID que você estiver usando para essa seção
+    rotas: document.getElementById("uploadSection"),
   };
 
   const username = document.body.getAttribute("data-username");
 
   if (username) {
     if (welcomeTitle) welcomeTitle.innerText = `Bem-vindo, ${username}`;
-    if (welcomeSubtitle) welcomeSubtitle.innerText = "Selecione uma opção no menu à esquerda para começar.";
+    if (welcomeSubtitle) welcomeSubtitle.innerText = "Selecione uma opcao no menu a esquerda para comecar.";
   }
 
   if (toggle) {

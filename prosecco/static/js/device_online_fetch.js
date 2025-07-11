@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Erro ao carregar dispositivos:", error);
             const errorMessage = document.createElement("p");
-            errorMessage.textContent = "Nao foi possível carregar os dispositivos. Tente novamente mais tarde.";
+            errorMessage.textContent = "Nao foi possivel carregar os dispositivos. Tente novamente mais tarde.";
             errorMessage.style.color = "red";
             devicesListContainer.appendChild(errorMessage);
         }
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         } catch (error) {
             console.error("Erro ao comunicar com o servidor:", error);
-            alert("Erro na comunicação com o servidor.");
+            alert("Erro na comunicacao com o servidor.");
         }
     }
 
@@ -120,14 +120,14 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (response.ok) {
-                alert("Dispositivo excluído com sucesso.");
+                alert("Dispositivo excluido com sucesso.");
                 fetchDevices();
             } else {
                 alert("Falha ao excluir o dispositivo.");
             }
         } catch (error) {
             console.error("Erro ao comunicar com o servidor:", error);
-            alert("Erro na comunicação com o servidor.");
+            alert("Erro na comunicacao com o servidor.");
         }
     }
 

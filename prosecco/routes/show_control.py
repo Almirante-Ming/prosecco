@@ -39,11 +39,11 @@ def listar_jsons():
 @control_bp.route('/show/<filename>', methods=['GET']) #
 def get_specific_json_content(filename):
     if not filename or not filename.endswith('.json') or '..' in filename:
-        return jsonify({"error": "Nome de arquivo inválido"}), 400
+        return jsonify({"error": "Nome do arquivo de configuracao invalido"}), 400
 
     file_path = os.path.join(CONTROL_FOLDER, filename)
     if not os.path.exists(file_path):
-        return jsonify({"error": "Arquivo JSON não encontrado"}), 404
+        return jsonify({"error": "Arquivo de configuracao da rota nao encontrado"}), 404
 
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -51,7 +51,7 @@ def get_specific_json_content(filename):
         return jsonify(data), 200
     except json.JSONDecodeError:
         current_app.logger.exception(f"Erro ao decodificar JSON: {filename}")
-        return jsonify({"error": "Arquivo JSON mal formatado"}), 500
+        return jsonify({"error": "Configuracao da rota corrompida ou contem erros de formatacao"}), 500
     except Exception as e:
         current_app.logger.exception(f"Erro ao ler o arquivo JSON: {filename}")
         return jsonify({"error": str(e)}), 500
@@ -60,11 +60,11 @@ def get_specific_json_content(filename):
 def atualizar_json():
     filename = request.args.get('file')
     if not filename or not filename.endswith('.json') or '..' in filename:
-        return jsonify({"error": "Arquivo invalido"}), 400
+        return jsonify({"error": "Arquivo de configuracao da rota invalido"}), 400
 
     file_path = os.path.join(CONTROL_FOLDER, filename)
     if not os.path.exists(file_path):
-        return jsonify({"error": "Arquivo não encontrado"}), 404
+        return jsonify({"error": "Configuracao da rota nao encontrada"}), 404
 
     try:
         data = request.get_json(force=True)
@@ -82,7 +82,7 @@ def atualizar_json():
                 json.dump(data, f, indent=2, ensure_ascii=False)
             return jsonify({"message": "grupo atualizado com sucesso"}), 200
 
-        return jsonify({"error": "Formato inválido."}), 400
+        return jsonify({"error": "Formato dos dados de configuracao invalido"}), 400
 
     except Exception as e:
         current_app.logger.exception("Erro ao atualizar o grupo")
@@ -92,7 +92,7 @@ def atualizar_json():
 def deletar_arquivos_upload():
     arquivos = request.get_json(force=True)
     if not isinstance(arquivos, list):
-        return jsonify({'error': 'arquivos nao selecionados para delecao'}), 400
+        return jsonify({'error': 'Nenhum arquivo de midia selecionado para remocao'}), 400
 
     erros = []
     for nome in arquivos:
@@ -103,9 +103,9 @@ def deletar_arquivos_upload():
             except Exception as e:
                 erros.append({'file': nome, 'error': str(e)})
         else:
-            erros.append({'file': nome, 'error': 'Arquivo não encontrado'})
+            erros.append({'file': nome, 'error': 'Arquivo nao encontrado'})
 
     if erros:
-        return jsonify({'message': 'Alguns arquivos não puderam ser removidos', 'erros': erros}), 207
+        return jsonify({'message': 'Alguns arquivos nao puderam ser removidos', 'erros': erros}), 207
 
     return jsonify({'message': 'Arquivos removidos com sucesso'}), 200

@@ -18,7 +18,7 @@ form.addEventListener('submit', async function (e) {
 
         if (data.success) {
             responseDiv.classList.add('is-success');
-            responseDiv.textContent = data.message || 'Upload realizado com sucesso!';
+            responseDiv.textContent = data.message || 'Arquivo de midia enviado com sucesso!';
 
             setTimeout(() => {
                 if (window.carregarMidias) {
@@ -28,13 +28,13 @@ form.addEventListener('submit', async function (e) {
             }, 1000);
         } else {
             responseDiv.classList.add('is-danger');
-            responseDiv.textContent = data.error || 'Erro no upload.';
+            responseDiv.textContent = data.error || 'Falha no envio do arquivo.';
             hideMessage();
         }
     } catch (err) {
         responseDiv.classList.remove('is-hidden', 'is-success');
         responseDiv.classList.add('is-danger');
-        responseDiv.textContent = 'Erro ao enviar o formulário.';
+        responseDiv.textContent = 'Falha na conexao com o servico de upload.';
         hideMessage();
     }
 

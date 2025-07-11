@@ -7,7 +7,7 @@ def process_file_job(file_id):
     with prosecco.app_context():
         file_record = db.session.query(File_trk).filter(File_trk.id == file_id).first()
         if not file_record:
-            print(f'Arquivo {file_id} não encontrado para processamento.')
+            print(f'Arquivo {file_id} nao encontrado para processamento.')
             return
 
         print(f"Processando arquivo: {file_record.filepath}")

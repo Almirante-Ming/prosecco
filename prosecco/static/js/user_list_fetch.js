@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const usersListContainer = document.getElementById("users_list");
 
-  const titleElement = document.createElement("h3");
-  titleElement.innerText = "Usuários";
+  const titleElement = document.createElement("h3");      
+  titleElement.innerText = "Usuarios";
   titleElement.style.position = "sticky";
   titleElement.style.top = "0";
   titleElement.style.backgroundColor = "#fff";
@@ -47,9 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       renderUserList(users);
     } catch (error) {
-      console.error("Erro ao carregar usuários:", error);
+      console.error("Erro ao carregar usuarios:", error);
       const errorMsg = document.createElement("p");
-      errorMsg.textContent = "Não foi possível carregar os usuários.";
+      errorMsg.textContent = "Nao foi possivel carregar a lista de usuarios do sistema.";
       errorMsg.style.color = "red";
       usersListContainer.appendChild(errorMsg);
     }
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   async function changePassword(userId, currentStatus) {
     if (currentStatus === "DELETED") {
-      alert("Não é possível alterar a senha de um usuário excluído.");
+      alert("Nao e possivel alterar a senha de uma conta excluida.");
       return;
     }
     currentUserId = userId;
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
   btnSavePassword.onclick = async function () {
     const newPassword = inputNewPassword.value.trim();
     if (!newPassword) {
-      modalErrorMsg.textContent = "A senha não pode ser vazia.";
+      modalErrorMsg.textContent = "A nova senha nao pode estar vazia.";
       modalErrorMsg.classList.remove("is-hidden");
       return;
     }
@@ -154,17 +154,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (error) {
       console.error("Erro ao comunicar com o servidor:", error);
-      alert("Erro na comunicação com o servidor.");
+      alert("Falha na conexao com o servidor de gerenciamento.");
     }
   };
 
   async function approveUser(userId, currentStatus) {
     if (currentStatus === "DELETED") {
-      alert("Não é possível aprovar um usuário excluído.");
+      alert("Nao e possivel aprovar uma conta excluida do sistema.");
       return;
     }
     if (currentStatus === "ACTIVE") {
-      alert("Usuário já está aprovado (ACTIVE).");
+      alert("Conta ja esta aprovada e ativa no sistema.");
       return;
     }
 
@@ -176,24 +176,24 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        alert("Usuário aprovado com sucesso.");
+        alert("Conta de usuario aprovada com sucesso.");
         fetchUsers();
       } else {
-        alert("Falha ao aprovar usuário.");
+        alert("Falha ao aprovar a conta no sistema.");
       }
     } catch (error) {
       console.error("Erro ao comunicar com o servidor:", error);
-      alert("Erro na comunicação com o servidor.");
+      alert("Erro na comunicacao com o servidor.");
     }
   }
 
   async function inactivateUser(userId, currentStatus) {
     if (currentStatus === "DELETED") {
-      alert("Não é possível inativar um usuário excluído.");
+      alert("Nao e possivel inativar uma conta excluida do sistema.");
       return;
     }
     if (currentStatus === "INACTIVE") {
-      alert("Usuário já está inativo.");
+      alert("Conta ja esta inativa no sistema.");
       return;
     }
 
@@ -205,19 +205,19 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        alert("Usuário inativado com sucesso.");
+        alert("Conta de usuario inativada com sucesso.");
         fetchUsers();
       } else {
-        alert("Falha ao inativar usuário.");
+        alert("Falha ao inativar usuario.");
       }
     } catch (error) {
       console.error("Erro ao comunicar com o servidor:", error);
-      alert("Erro na comunicação com o servidor.");
+      alert("Erro na comunicacao com o servidor.");
     }
   }
 
   async function deleteUser(userId) {
-    if (!confirm("Tem certeza que deseja excluir este usuário?")) return;
+    if (!confirm("Tem certeza que deseja excluir esta conta do sistema?")) return;
 
     try {
       const response = await fetch(`/adm/user/${userId}`, {
@@ -225,14 +225,14 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
-        alert("Usuário excluído (soft delete) com sucesso.");
+        alert("Conta de usuario excluida do sistema com sucesso.");
         fetchUsers();
       } else {
-        alert("Falha ao excluir usuário.");
+        alert("Falha ao excluir a conta do sistema.");
       }
     } catch (error) {
       console.error("Erro ao comunicar com o servidor:", error);
-      alert("Erro na comunicação com o servidor.");
+      alert("Erro na comunicacao com o servidor.");
     }
   }
 

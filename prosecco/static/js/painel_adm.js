@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       welcomeTitle.innerText = `Bem-vindo, ${username}`;
     }
     if (welcomeSubtitle) {
-      welcomeSubtitle.innerText = "Selecione uma opção no menu à esquerda para começar.";
+      welcomeSubtitle.innerText = "Selecione uma opcao no menu a esquerda para comecar.";
     }
   }
 
@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.classList.remove("active");
   }
 
-  // --- New functionality for Group Media Modal ---
   const viewGroupMediaBtn = document.getElementById("viewGroupMediaBtn");
   const groupMediaModal = document.getElementById("groupMediaModal");
   const closeGroupMediaModal = document.getElementById("closeGroupMediaModal");
@@ -92,10 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closeModal(modal) {
     modal.classList.remove("is-active");
-    groupMediaList.innerHTML = ''; // Clear content when closing
+    groupMediaList.innerHTML = '';
   }
 
-  // Function to load JSON groups into the select dropdown
   async function loadJsonGroups() {
     try {
       const response = await fetch('/control/show');
@@ -112,25 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
         jsonSelect.appendChild(option);
       });
     } catch (error) {
-      console.error("Erro ao carregar grupos JSON:", error);
+      console.error("Erro ao carregar grupos de midia:", error);
       jsonSelect.innerHTML = '<option disabled selected>Erro ao Carregar Grupos</option>';
     }
   }
 
-  // Load groups when the page loads
   loadJsonGroups();
 
-  // --- Nova função para ocultar o UUID ---
   function getCleanFilename(filename) {
-    // Regex para detectar um UUID (32 caracteres hexadecimais) seguido por '_'
     const uuidRegex = /^[0-9a-fA-F]{32}_/;
     if (filename && uuidRegex.test(filename)) {
       return filename.replace(uuidRegex, '');
     }
     return filename;
   }
-  // --- Fim da nova função ---
-
 
   if (viewGroupMediaBtn) {
     viewGroupMediaBtn.addEventListener("click", async () => {
@@ -140,46 +133,43 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      groupMediaList.innerHTML = '<p class="has-text-centered">Carregando mídias...</p>';
+      groupMediaList.innerHTML = '<p class="has-text-centered">Carregando midias...</p>';
       openModal(groupMediaModal);
 
       try {
         const response = await fetch(`/control/show/${selectedJsonFilename}`);
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}. Não foi possível buscar o conteúdo do JSON.`);
+          throw new Error(`HTTP error! status: ${response.status}. Nao foi possivel buscar o conteudo do arquivo de configuracao.`);
         }
         const media = await response.json();
 
-        groupMediaList.innerHTML = ''; // Clear loading message
+        groupMediaList.innerHTML = '';
 
         if (!Array.isArray(media) || media.length === 0) {
-          groupMediaList.innerHTML = '<p class="has-text-centered">Nenhuma mídia encontrada neste grupo ou formato inválido.</p>';
+          groupMediaList.innerHTML = '<p class="has-text-centered">Nenhuma midia encontrada neste grupo ou formato invalido.</p>';
           return;
         }
 
-        // Revertendo para a estrutura de lista (ul, li)
         const ul = document.createElement('ul');
-        ul.classList.add('list'); // Classe Bulma para listas
+        ul.classList.add('list');
 
         media.forEach(item => {
           const li = document.createElement('li');
           li.classList.add('list-item', 'is-flex', 'is-align-items-center', 'py-2');
-          li.style.borderBottom = '1px solid #eee'; // Separador para cada item
+          li.style.borderBottom = '1px solid #eee';
 
           let previewHtml = '';
           const mediaFilePath = `/static/uploads/${item.file}`;
           const isImage = item.type === 'image';
           const isVideo = item.type === 'video';
-          // Usando a nova função para obter o nome limpo para exibição
           const cleanFileNameDisplay = getCleanFilename(item.file || 'Arquivo Desconhecido');
 
-          // Tamanho da miniatura maior e sem nome visível
           if (isImage) {
             previewHtml = `<figure class="image is-96x96 mr-0"><img src="${mediaFilePath}" alt="${cleanFileNameDisplay}" style="object-fit: cover;"></figure>`;
           } else if (isVideo) {
             previewHtml = `<figure class="image is-96x96 mr-0"><video src="${mediaFilePath}" style="object-fit: cover; width: 96px; height: 96px;"></video></figure>`;
           } else {
-            previewHtml = `<span class="icon is-large mr-0"><i class="fas fa-file fa-3x"></i></span>`; // Ícone maior para outros tipos
+            previewHtml = `<span class="icon is-large mr-0"><i class="fas fa-file fa-3x"></i></span>`;
           }
 
           li.innerHTML = `
@@ -195,8 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
         groupMediaList.appendChild(ul);
 
       } catch (error) {
-        console.error("Erro ao carregar mídias do grupo:", error);
-        groupMediaList.innerHTML = `<p class="has-text-danger has-text-centered">Erro ao carregar mídias: ${error.message}.</p>`;
+        console.error("Erro ao carregar midias do grupo:", error);
+        groupMediaList.innerHTML = `<p class="has-text-danger has-text-centered">Erro ao carregar midias: ${error.message}.</p>`;
       }
     });
   }
@@ -221,23 +211,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const filesToDelete = Array.from(checkboxes).map(cb => cb.dataset.filename);
 
       if (filesToDelete.length === 0) {
-        alert("Por favor, selecione as mídias para remover.");
+        alert("Por favor, selecione as midias para remover.");
         return;
       }
 
-      if (!confirm(`Tem certeza que deseja remover ${filesToDelete.length} mídia(s) do grupo ${selectedJsonFilename}?`)) {
+      if (!confirm(`Tem certeza que deseja remover ${filesToDelete.length} midia(s) do grupo ${selectedJsonFilename}?`)) {
         return;
       }
 
       try {
         const getResponse = await fetch(`/control/show/${selectedJsonFilename}`);
         if (!getResponse.ok) {
-          throw new Error(`HTTP error! status: ${getResponse.status}. Não foi possível buscar a configuração JSON atual.`);
+          throw new Error(`HTTP error! status: ${getResponse.status}. Nao foi possivel buscar a configuracao atual.`);
         }
         let currentMedia = await getResponse.json();
 
         if (!Array.isArray(currentMedia)) {
-          console.warn("Conteúdo do JSON não é um array. Inicializando como vazio.");
+          console.warn("Conteudo do arquivo de configuracao nao e um array. Inicializando como vazio.");
           currentMedia = [];
         }
 
@@ -265,8 +255,8 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(`Erro: ${result.error || 'Ocorreu um erro desconhecido.'}`);
         }
       } catch (error) {
-        console.error("Erro ao remover mídias:", error);
-        alert(`Ocorreu um erro ao tentar remover as mídias: ${error.message}`);
+        console.error("Erro ao remover midias:", error);
+        alert(`Ocorreu um erro ao tentar remover as midias: ${error.message}`);
       }
     });
   }

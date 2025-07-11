@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("Erro ao carregar dispositivos:", error);
             const errorMessage = document.createElement("p");
-            errorMessage.textContent = "Não foi possível carregar os dispositivos. Tente novamente mais tarde.";
+            errorMessage.textContent = "Nao foi possivel carregar a lista de dispositivos. Verifique a conexao.";
             errorMessage.style.color = "red";
             devicesListContainer.appendChild(errorMessage);
         }
@@ -106,15 +106,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (response.ok) {
-                alert("Dispositivo atualizado com sucesso.");
+                alert("Dispositivo de exibicao atualizado com sucesso.");
                 document.getElementById("editDeviceModal").classList.remove("is-active");
                 fetchDevices();
             } else {
-                alert("Falha ao atualizar o dispositivo.");
+                alert("Falha ao atualizar configuracao do dispositivo.");
             }
         } catch (error) {
             console.error("Erro ao comunicar com o servidor:", error);
-            alert("Erro na comunicação com o servidor.");
+            alert("Falha na conexao com o servidor de gerenciamento.");
         }
     };
 
@@ -127,14 +127,14 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (response.ok) {
-                alert("Dispositivo excluído com sucesso.");
+                alert("Dispositivo de exibicao excluido com sucesso.");
                 fetchDevices();
             } else {
-                alert("Falha ao excluir o dispositivo.");
+                alert("Falha ao remover dispositivo do sistema.");
             }
         } catch (error) {
             console.error("Erro ao comunicar com o servidor:", error);
-            alert("Erro na comunicação com o servidor.");
+            alert("Falha na conexao com o servidor de gerenciamento.");
         }
     }
 

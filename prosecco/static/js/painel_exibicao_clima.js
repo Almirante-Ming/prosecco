@@ -36,7 +36,7 @@
       })
       .catch(error => {
         console.error("Erro ao carregar o clima:", error);
-        if (descricaoElement) descricaoElement.textContent = "Não foi possível carregar o clima";
+        if (descricaoElement) descricaoElement.textContent = "Nao foi possivel carregar o clima";
       });
   }
 

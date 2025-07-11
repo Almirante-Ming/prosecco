@@ -12,11 +12,11 @@ upload_route = Blueprint('upload', __name__)
 @login_required
 def upload_file():
     if 'file' not in request.files:
-        return jsonify(success=False, error='Nenhum arquivo enviado'), 400
+        return jsonify(success=False, error='Nenhuma midia selecionada para upload'), 400
 
     file = request.files['file']
     if file.filename == '':
-        return jsonify(success=False, error='Arquivo sem nome'), 400
+        return jsonify(success=False, error='Nome do arquivo nao pode estar vazio'), 400
 
     chosen_name = request.form.get('filename')
     filename = chosen_name if chosen_name else file.filename

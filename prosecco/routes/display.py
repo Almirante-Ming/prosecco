@@ -10,14 +10,14 @@ def show_group_content(group_name):
     json_path = os.path.join(current_app.root_path, 'static', 'show_control', json_filename)
 
     if not os.path.exists(json_path):
-        abort(404, description=f"Conteúdo para o grupo '{group_name}' não encontrado.")
+        abort(404, description=f"Configuracao de exibicao para o grupo '{group_name}' nao encontrada")
 
     try:
         with open(json_path, 'r', encoding='utf-8') as f:
             content_data = json.load(f)
     except json.JSONDecodeError as e:
-        abort(500, description=f"Erro de formato no conteudo do grupo '{group_name}'.")
+        abort(500, description=f"Configuracao de exibicao corrompida para o grupo '{group_name}'")
     except Exception as e:
-        abort(500, description=f"Erro ao carregar conteudo para o grupo '{group_name}'.")
+        abort(500, description=f"Falha ao carregar configuracao de exibicao para o grupo '{group_name}'")
 
     return render_template('painel_exibicao.html', content=content_data, group=group_name)

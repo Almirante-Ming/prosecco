@@ -20,12 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         if (!name || !email || !password) {
-            feedbackMessageP.textContent = 'Por favor, preencha todos os campos obrigatórios (Nome, Email, Passphrase).';
+            feedbackMessageP.textContent = 'Por favor, preencha todos os campos de cadastro (Nome, Email, Senha).';
             feedbackMessageP.classList.add('has-text-danger');
             return;
         }
         if (!email.includes('@') || !email.includes('.')) {
-             feedbackMessageP.textContent = 'Por favor, insira um email válido.';
+             feedbackMessageP.textContent = 'Por favor, insira um endereco de email valido.';
              feedbackMessageP.classList.add('has-text-danger');
              return;
         }
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
 
             if (response.ok) {
-                feedbackMessageP.textContent = 'Usuário criado com sucesso!';
+                feedbackMessageP.textContent = 'Conta de usuario criada com sucesso!';
                 feedbackMessageP.classList.add('has-text-success');
                 userNameInput.value = '';
                 userEmailInput.value = '';
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 userTypeSelect.value = 'user';
             } else {
 
-                let errorMessage = `Erro ao criar usuário: ${response.status}`;
+                let errorMessage = `Falha no cadastro da conta: ${response.status}`;
                 if (result && result.error) {
                     errorMessage += ` - ${result.error}`;
                 }
@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 feedbackMessageP.classList.add('has-text-danger');
             }
         } catch (error) {
-            console.error('Erro na requisição:', error);
-            feedbackMessageP.textContent = 'Não foi possível conectar ao servidor. Tente novamente mais tarde.';
+            console.error('Erro na requisicao:', error);
+            feedbackMessageP.textContent = 'Falha na conexao com o servidor de cadastro.';
             feedbackMessageP.classList.add('has-text-danger');
         }
     });

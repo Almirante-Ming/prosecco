@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(error => {
         console.error("Erro ao carregar o clima:", error);
-        if (descricaoElement) descricaoElement.textContent = "Não foi possível carregar o clima";
+        if (descricaoElement) descricaoElement.textContent = "Nao foi possivel carregar o clima";
       });
   }
 
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!carouselContentArea) return;
 
     if (mediaFiles.length === 0) {
-      carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Nenhuma mídia para exibir.</p>';
+      carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Nenhuma midia para exibir.</p>';
       return;
     }
 
@@ -97,15 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
         response = await cache.match(url);
 
         if (!response) {
-          console.debug(`[MÍDIA] Baixando: ${media.file}`);
+          console.debug(`[MIDIA] Baixando: ${media.file}`);
           response = await fetch(url);
           if (response.ok) await cache.put(url, response.clone());
           else throw new Error(`Erro ao baixar ${url}`);
         } else {
-          console.debug(`[MÍDIA] Reutilizando cache: ${media.file}`);
+          console.debug(`[MIDIA] Reutilizando cache: ${media.file}`);
         }
       } else {
-        console.warn("Cache API não disponível. Baixando direto...");
+        console.warn("Cache API nao disponivel. Baixando direto...");
         response = await fetch(url);
         if (!response.ok) throw new Error(`Erro ao baixar ${url}`);
       }
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showNextMedia();
       }
     } catch (err) {
-      console.error(`Erro ao exibir mídia ${media.file}:`, err);
+      console.error(`Erro ao exibir midia ${media.file}:`, err);
       currentIndex = (currentIndex + 1) % mediaFiles.length;
       showNextMedia();
     }
@@ -163,11 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const novoHash = hashObject(midias);
       if (novoHash !== lastJsonHash) {
-        console.debug("[MÍDIA] Mudança detectada no arquivo de configuração.");
+        console.debug("[MIDIA] Mudanca detectada no arquivo de configuracao.");
         lastJsonHash = novoHash;
 
         if ('caches' in window) {
-          console.debug(`[MÍDIA] Limpando cache de mídia...`);
+          console.debug(`[MIDIA] Limpando cache de midia...`);
           await caches.delete('media-cache-template');
         }
 
@@ -175,19 +175,19 @@ document.addEventListener('DOMContentLoaded', () => {
         currentIndex = 0;
         showNextMedia();
       } else {
-        console.debug("[MÍDIA] Nenhuma alteração detectada.");
+        console.debug("[MIDIA] Nenhuma alteracao detectada.");
       }
     } catch (err) {
-      console.error("Erro ao verificar atualização das mídias:", err);
+      console.error("Erro ao verificar atualizacao das midias:", err);
       if (carouselContentArea && mediaFiles.length === 0) {
-        carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Erro ao carregar mídias.</p>';
+        carouselContentArea.innerHTML = '<p style="color: grey; text-align: center;">Erro ao carregar midias.</p>';
       }
     }
   }
 
   verificarAtualizacaoMidias(jsonFileName);
   setInterval(() => {
-    console.debug('[MÍDIA] Verificando atualizações do arquivo de configuração...');
+    console.debug('[MIDIA] Verificando atualizacoes do arquivo de configuracao...');
     verificarAtualizacaoMidias(jsonFileName);
   }, 60000);
 });

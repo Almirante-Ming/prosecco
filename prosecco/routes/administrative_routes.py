@@ -11,7 +11,6 @@ adm_route = Blueprint('/adm', __name__)
 
 
 
-# -------------------- usuarios -----------------------------------------------------
 @adm_route.route('/adm/users', methods=['GET'])
 def get_all_users():
     all_users = db.session.query(User).filter(
@@ -80,7 +79,6 @@ def delete_user(user_id):
 
 
 
-# ----------- telas--------------------------------------------
 @adm_route.route('/adm/devices', methods=['GET'])
 def get_all_devices():
     all_devices = db.session.query(Device).filter(Device.a_state != Device_state.DELETED).all()
@@ -98,12 +96,12 @@ def add_new_device():
     reserved_paths_lower = {r.lower() for r in reserved_paths}
 
     if group and group.lower() in reserved_paths_lower:
-        return jsonify(success=False, error='Nome de grupo invalido'), 400
+        return jsonify(success=False, error='Nome do grupo de exibicao invalido'), 400
 
     existing_device = db.session.query(Device).filter(Device.ip == ip).first()
 
     if existing_device and existing_device.a_state == Device_state.ACTIVE:
-        return jsonify(success=False, error='Dispositivo ja cadastrado no sistema'), 409
+        return jsonify(success=False, error='Dispositivo de exibicao ja cadastrado no sistema'), 409
 
     if existing_device and existing_device.a_state == Device_state.DELETED:
         existing_device.a_state = Device_state.ACTIVE
@@ -132,7 +130,7 @@ def add_new_device():
 def update_device(device_id):
     device = db.session.query(Device).filter(Device.id == device_id).first()
     if not device:
-        return jsonify(success=False, error='Dispositivo nao encontrado'), 404
+        return jsonify(success=False, error='Dispositivo de exibicao nao encontrado'), 404
 
     data = request.json
     if 'ip' in data:  # type: ignore

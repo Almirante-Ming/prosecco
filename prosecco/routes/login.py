@@ -22,10 +22,10 @@ def auth():
         return jsonify(success=False, error="Usuario nao encontrado"), 404
 
     if not user.is_active_account():
-        return jsonify(success=False, error="Problemas com o cadastro"), 403
+        return jsonify(success=False, error="Conta de usuario inativa ou bloqueada"), 403
 
     if not check_password_hash(user.passphrase, passphrase_do_formulario):
-        return jsonify(success=False, error="Credenciais inválidas"), 401
+        return jsonify(success=False, error="Dados de login invalidos"), 401
 
 
     login_user(user)

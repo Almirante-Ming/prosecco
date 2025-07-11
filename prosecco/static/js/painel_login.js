@@ -14,10 +14,10 @@ async function Login() {
         if (data.success) {
             window.location.href = data.redirect_url;
         } else {
-            document.getElementById("mensagem").innerText = data.error || "Erro desconhecido.";
+            document.getElementById("mensagem").innerText = data.error || "Falha na autenticacao.";
         }
     } catch (err) {
         console.error('Erro de rede:', err);
-        document.getElementById("mensagem").innerText = "Erro de rede. Tente novamente mais tarde.";
+        document.getElementById("mensagem").innerText = "Falha na conexao com o servidor. Verifique sua internet.";
     }
 }
