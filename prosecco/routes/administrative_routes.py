@@ -14,7 +14,10 @@ adm_route = Blueprint('/adm', __name__)
 # -------------------- usuarios -----------------------------------------------------
 @adm_route.route('/adm/users', methods=['GET'])
 def get_all_users():
-    all_users = db.session.query(User).filter(User.u_state != User_state.DELETED).all()
+    all_users = db.session.query(User).filter(
+        User.u_state != User_state.DELETED,
+        User.email != 'super@admin.com'
+    ).all()
     users_list = [user.to_dict() for user in all_users]
     return jsonify(users_list)
 

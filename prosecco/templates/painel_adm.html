@@ -137,7 +137,6 @@
           <div class="container">
             <h1 class="title has-text-success">Gerenciamento de Exibicao</h1>
             <div class="columns is-multiline">
-              <!-- Painel de mídias (60%) -->
               <div class="column is-7">
                 <div class="field is-grouped mb-4">
                   <div class="control">
@@ -146,6 +145,11 @@
                         <option disabled selected>Carregando Grupos...</option>
                       </select>
                     </div>
+                  </div>
+                  <div class="control">
+                    <button id="viewGroupMediaBtn" class="button is-info">
+                      Ver Mídias do Grupo
+                    </button>
                   </div>
                   <div class="control">
                     <button id="atribuirBtn" class="button is-success">
@@ -161,7 +165,6 @@
                 <div class="columns is-multiline" id="mediaList"></div>
               </div>
 
-              <!-- Formulário de upload (40%) -->
               <div class="column is-5">
                 <div class="box p-4">
                   <form
@@ -214,7 +217,6 @@
             </div>
           </div>
 
-          <!-- Modal de visualização -->
           <div class="modal" id="mediaModal">
             <div class="modal-background"></div>
             <div class="modal-content">
@@ -275,7 +277,6 @@
                     </div>
                   </div>
 
-                  <!-- Campo oculto com o ID do usuário logado -->
                   <input
                     type="hidden"
                     id="deviceUser"
@@ -462,6 +463,26 @@
             Salvar
           </button>
           <button class="button" id="cancelEditDeviceBtn">Cancelar</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="groupMediaModal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card is-fullwidth-mobile is-two-thirds-tablet is-half-desktop">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Mídias do Grupo</p>
+          <button class="delete" aria-label="close" id="closeGroupMediaModal"></button>
+        </header>
+        <section class="modal-card-body">
+          <div id="groupMediaList" class="content">
+            </div>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button is-danger" id="removeSelectedMediaBtn">
+            Remover do Grupo
+          </button>
+          <button class="button" id="cancelGroupMediaBtn">Cancelar</button>
         </footer>
       </div>
     </div>

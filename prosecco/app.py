@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, send_from_directory
 from flask_login import LoginManager, login_required
 from prosecco.config import db, migrate, limiter, User_type, scheduler, BASE_DIR, UPLOAD_FOLDER, CONTROL_FOLDER
 from prosecco.utils import access_required, ip_authorized_required, redirect_by_ip_group,redirect_by_ip_group
@@ -74,6 +74,10 @@ def adm():
 @access_required(User_type.USER)
 def usr():
     return render_template('painel_user.html')
+
+@prosecco.route('/static/uploads/<path:filename>') #
+def serve_uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == '__main__':
     scheduler.init_app(prosecco)

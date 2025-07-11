@@ -36,6 +36,26 @@ def listar_jsons():
     ]
     return jsonify(arquivos)
 
+@control_bp.route('/show/<filename>', methods=['GET']) #
+def get_specific_json_content(filename):
+    if not filename or not filename.endswith('.json') or '..' in filename:
+        return jsonify({"error": "Nome de arquivo inválido"}), 400
+
+    file_path = os.path.join(CONTROL_FOLDER, filename)
+    if not os.path.exists(file_path):
+        return jsonify({"error": "Arquivo JSON não encontrado"}), 404
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data), 200
+    except json.JSONDecodeError:
+        current_app.logger.exception(f"Erro ao decodificar JSON: {filename}")
+        return jsonify({"error": "Arquivo JSON mal formatado"}), 500
+    except Exception as e:
+        current_app.logger.exception(f"Erro ao ler o arquivo JSON: {filename}")
+        return jsonify({"error": str(e)}), 500
+
 @control_bp.route('/set', methods=['PUT'])
 def atualizar_json():
     filename = request.args.get('file')

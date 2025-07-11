@@ -76,4 +76,198 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sidebar.classList.remove("active");
   }
+
+  // --- New functionality for Group Media Modal ---
+  const viewGroupMediaBtn = document.getElementById("viewGroupMediaBtn");
+  const groupMediaModal = document.getElementById("groupMediaModal");
+  const closeGroupMediaModal = document.getElementById("closeGroupMediaModal");
+  const cancelGroupMediaBtn = document.getElementById("cancelGroupMediaBtn");
+  const removeSelectedMediaBtn = document.getElementById("removeSelectedMediaBtn");
+  const groupMediaList = document.getElementById("groupMediaList");
+  const jsonSelect = document.getElementById("jsonSelect");
+
+  function openModal(modal) {
+    modal.classList.add("is-active");
+  }
+
+  function closeModal(modal) {
+    modal.classList.remove("is-active");
+    groupMediaList.innerHTML = ''; // Clear content when closing
+  }
+
+  // Function to load JSON groups into the select dropdown
+  async function loadJsonGroups() {
+    try {
+      const response = await fetch('/control/show');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const files = await response.json();
+
+      jsonSelect.innerHTML = '<option disabled selected>Selecione um Grupo</option>';
+      files.forEach(file => {
+        const option = document.createElement('option');
+        option.value = file;
+        option.textContent = file;
+        jsonSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Erro ao carregar grupos JSON:", error);
+      jsonSelect.innerHTML = '<option disabled selected>Erro ao Carregar Grupos</option>';
+    }
+  }
+
+  // Load groups when the page loads
+  loadJsonGroups();
+
+  // --- Nova função para ocultar o UUID ---
+  function getCleanFilename(filename) {
+    // Regex para detectar um UUID (32 caracteres hexadecimais) seguido por '_'
+    const uuidRegex = /^[0-9a-fA-F]{32}_/;
+    if (filename && uuidRegex.test(filename)) {
+      return filename.replace(uuidRegex, '');
+    }
+    return filename;
+  }
+  // --- Fim da nova função ---
+
+
+  if (viewGroupMediaBtn) {
+    viewGroupMediaBtn.addEventListener("click", async () => {
+      const selectedJsonFilename = jsonSelect.value;
+      if (!selectedJsonFilename || selectedJsonFilename === 'Selecione um Grupo') {
+        alert("Por favor, selecione um grupo primeiro.");
+        return;
+      }
+
+      groupMediaList.innerHTML = '<p class="has-text-centered">Carregando mídias...</p>';
+      openModal(groupMediaModal);
+
+      try {
+        const response = await fetch(`/control/show/${selectedJsonFilename}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}. Não foi possível buscar o conteúdo do JSON.`);
+        }
+        const media = await response.json();
+
+        groupMediaList.innerHTML = ''; // Clear loading message
+
+        if (!Array.isArray(media) || media.length === 0) {
+          groupMediaList.innerHTML = '<p class="has-text-centered">Nenhuma mídia encontrada neste grupo ou formato inválido.</p>';
+          return;
+        }
+
+        // Revertendo para a estrutura de lista (ul, li)
+        const ul = document.createElement('ul');
+        ul.classList.add('list'); // Classe Bulma para listas
+
+        media.forEach(item => {
+          const li = document.createElement('li');
+          li.classList.add('list-item', 'is-flex', 'is-align-items-center', 'py-2');
+          li.style.borderBottom = '1px solid #eee'; // Separador para cada item
+
+          let previewHtml = '';
+          const mediaFilePath = `/static/uploads/${item.file}`;
+          const isImage = item.type === 'image';
+          const isVideo = item.type === 'video';
+          // Usando a nova função para obter o nome limpo para exibição
+          const cleanFileNameDisplay = getCleanFilename(item.file || 'Arquivo Desconhecido');
+
+          // Tamanho da miniatura maior e sem nome visível
+          if (isImage) {
+            previewHtml = `<figure class="image is-96x96 mr-0"><img src="${mediaFilePath}" alt="${cleanFileNameDisplay}" style="object-fit: cover;"></figure>`;
+          } else if (isVideo) {
+            previewHtml = `<figure class="image is-96x96 mr-0"><video src="${mediaFilePath}" style="object-fit: cover; width: 96px; height: 96px;"></video></figure>`;
+          } else {
+            previewHtml = `<span class="icon is-large mr-0"><i class="fas fa-file fa-3x"></i></span>`; // Ícone maior para outros tipos
+          }
+
+          li.innerHTML = `
+            <label class="checkbox is-flex is-align-items-center" style="width: 100%;">
+              <input type="checkbox" data-filename="${item.file}" class="mr-3">
+              ${previewHtml}
+              <span class="is-clipped" style="flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: none;" title="${cleanFileNameDisplay}">${cleanFileNameDisplay}</span>
+              <span class="tag is-light is-small ml-2">${item.type || 'unknown'}</span>
+            </label>
+          `;
+          ul.appendChild(li);
+        });
+        groupMediaList.appendChild(ul);
+
+      } catch (error) {
+        console.error("Erro ao carregar mídias do grupo:", error);
+        groupMediaList.innerHTML = `<p class="has-text-danger has-text-centered">Erro ao carregar mídias: ${error.message}.</p>`;
+      }
+    });
+  }
+
+  if (closeGroupMediaModal) {
+    closeGroupMediaModal.addEventListener("click", () => closeModal(groupMediaModal));
+  }
+
+  if (cancelGroupMediaBtn) {
+    cancelGroupMediaBtn.addEventListener("click", () => closeModal(groupMediaModal));
+  }
+
+  if (removeSelectedMediaBtn) {
+    removeSelectedMediaBtn.addEventListener("click", async () => {
+      const selectedJsonFilename = jsonSelect.value;
+      if (!selectedJsonFilename) {
+        alert("Erro: Nenhum grupo selecionado.");
+        return;
+      }
+
+      const checkboxes = groupMediaList.querySelectorAll('input[type="checkbox"]:checked');
+      const filesToDelete = Array.from(checkboxes).map(cb => cb.dataset.filename);
+
+      if (filesToDelete.length === 0) {
+        alert("Por favor, selecione as mídias para remover.");
+        return;
+      }
+
+      if (!confirm(`Tem certeza que deseja remover ${filesToDelete.length} mídia(s) do grupo ${selectedJsonFilename}?`)) {
+        return;
+      }
+
+      try {
+        const getResponse = await fetch(`/control/show/${selectedJsonFilename}`);
+        if (!getResponse.ok) {
+          throw new Error(`HTTP error! status: ${getResponse.status}. Não foi possível buscar a configuração JSON atual.`);
+        }
+        let currentMedia = await getResponse.json();
+
+        if (!Array.isArray(currentMedia)) {
+          console.warn("Conteúdo do JSON não é um array. Inicializando como vazio.");
+          currentMedia = [];
+        }
+
+        const updatedMedia = currentMedia.filter(item => !filesToDelete.includes(item.file));
+
+        const putResponse = await fetch(`/control/set?file=${selectedJsonFilename}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedMedia)
+        });
+
+        if (!putResponse.ok) {
+          const errorData = await putResponse.json();
+          throw new Error(`HTTP error! status: ${putResponse.status}: ${errorData.error || putResponse.statusText}`);
+        }
+
+        const result = await putResponse.json();
+        if (result.message) {
+          alert(result.message);
+          closeModal(groupMediaModal);
+          viewGroupMediaBtn.click();
+        } else {
+          alert(`Erro: ${result.error || 'Ocorreu um erro desconhecido.'}`);
+        }
+      } catch (error) {
+        console.error("Erro ao remover mídias:", error);
+        alert(`Ocorreu um erro ao tentar remover as mídias: ${error.message}`);
+      }
+    });
+  }
 });
