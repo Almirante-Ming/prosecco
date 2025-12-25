@@ -18,7 +18,8 @@ midias fora do padrao podem sofrer com erros de exibicao bem como distorcao.
 - segue o arquivo .env.example com todas as variaves abertas para edicao, as que devem ser fixas ja estao preenchidas
 - o projeto foi feito e testado em ambiente linux, caso seja utilizado dentro de maquinas virtuais ou no windows, certifique
 de ter permissoes de acesso direto a rede, sem subrede virtual (modo ponte).
-- login inicial da aplicacao (email: 'super@admin.com', senha: 'masterkey'
+- login inicial da aplicacao (email: 'super@admin.com', senha: 'masterkey')
+- os arquivos de certificado e senha nao devem ser usados em producao, estao incluidos para fins de teste, uma vez que o javascript nao aceita salvar em cache de sites que nao sejam https
 
 formatos suportados:
 - imagens = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'svg', 'tiff']
